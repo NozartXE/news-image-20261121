@@ -72,14 +72,17 @@ STRIP = [
 ]
 
 CHECK_LEAD = "DATE CHECK — NOT TODAY: "
-# One line, abbreviated but naming all seven exclusions.  BepiColombo
+# One line, abbreviated but naming all eight exclusions.  BepiColombo
 # left this list in round 2: ESA + Wikipedia date the Mercury orbit
 # insertion to 21 Nov 2026, so it is a story on this page, not an
 # exclusion.  The Shenzhen summit (Thu 19 Nov) takes its place.
+# Round 4: the Poland missile is dated 20 Nov (the Kh-101 crashed
+# during the 19→20 Nov barrage), and the Kryvyi Rih double-tap
+# strike — late on Fri 20 Nov — joins the list as an exclusion.
 CHECK_L1 = (
-    "Wall Street (20 Nov) · Poland missile (20→21 Nov) · "
-    "UK–EU deal (20) · Akvan (20) · Shenzhen summit (19) · "
-    "ICJ ruling (19) · GTA VI (19)"
+    "Wall Street (20 Nov) · Poland missile (20) · "
+    "Kryvyi Rih (20) · UK–EU deal (20) · Akvan (20) · "
+    "Shenzhen summit (19) · ICJ ruling (19) · GTA VI (19)"
 )
 CHECK_L2 = ""
 
