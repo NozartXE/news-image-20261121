@@ -3,8 +3,8 @@
 The page is a stack of horizontal bands whose heights sum to the
 1024 px canvas::
 
-    kicker 20 + date 88 + figure strip 42 + hero row 292
-    + cards 252 + map 74 + index 216 + date check 26 + footer 14 = 1024
+    kicker 20 + date 88 + figure strip 42 + hero row 285
+    + cards 252 + map 74 + index 211 + date check 39 + footer 13 = 1024
 
 The map band is funded by trimming band heights (index rows,
 DATE CHECK to one line, hero/cards/kicker/strip/footer trims) —
@@ -31,18 +31,18 @@ RIGHT = MARGIN + CONTENT
 KICKER_H = 20
 DATE_H = 88
 STRIP_H = 42
-HERO_H = 292
+HERO_H = 285
 CARDS_H = 252
 MAP_H = 74
-INDEX_H = 216
-CHECK_H = 26
-FOOTER_H = 14
+INDEX_H = 211
+CHECK_H = 39
+FOOTER_H = 13
 
 # Index grid: four columns; a column holds eight briefs.  The
 # grid starts INDEX_TOP px into the band and rows are INDEX_ROW_H
 # apart; a brief's lines advance INDEX_LEAD px each.  The deepest
 # brief (row 7, one line) bottoms at 20 + 7*25 + 14 = 209 px,
-# inside the 216 px band — the gate measures this per brief.
+# inside the 211 px band — the gate measures this per brief.
 INDEX_ROWS = 8
 INDEX_ROW_H = 25
 INDEX_TOP = 20
@@ -72,19 +72,31 @@ STRIP = [
 ]
 
 CHECK_LEAD = "DATE CHECK — NOT TODAY: "
-# One line, abbreviated but naming all eight exclusions.  BepiColombo
-# left this list in round 2: ESA + Wikipedia date the Mercury orbit
-# insertion to 21 Nov 2026, so it is a story on this page, not an
-# exclusion.  The Shenzhen summit (Thu 19 Nov) takes its place.
+# Two lines naming all eight exclusions.  BepiColombo left this
+# list in round 2: ESA + Wikipedia date the Mercury orbit insertion
+# to 21 Nov 2026, so it is a story on this page, not an exclusion.
+# The Shenzhen summit (Thu 19 Nov) takes its place.
 # Round 4: the Poland missile is dated 20 Nov (the Kh-101 crashed
 # during the 19→20 Nov barrage), and the Kryvyi Rih double-tap
 # strike — late on Fri 20 Nov — joins the list as an exclusion.
+# Round 5: uniform FULL dates plus one source tag per exclusion,
+# split across the two lines (the full one-line version measures
+# 1,158.9 px at 9 pt against an 836.5 px body budget, so it cannot
+# fit on one line); CHECK_L2, already gate-checked for width, is
+# now drawn as the second line.  Tags come from this edition's own
+# dossiers: Daily Brief (Wall Street first report), Reuters
+# (Poland), Kyiv Independent (Kryvyi Rih wire), GOV.UK (UK–EU
+# deal), IMD (Akvan authority), The Hindu (Shenzhen trilateral),
+# ICJ (Press Release 2026/27), Rockstar (GTA VI publisher).
 CHECK_L1 = (
-    "Wall Street (20 Nov) · Poland missile (20) · "
-    "Kryvyi Rih (20) · UK–EU deal (20) · Akvan (20) · "
-    "Shenzhen summit (19) · ICJ ruling (19) · GTA VI (19)"
+    "Wall Street (20 Nov · Daily Brief) · Poland missile "
+    "(20 Nov · Reuters) · Kryvyi Rih (20 Nov · Kyiv Independent) · "
+    "UK–EU deal (20 Nov · GOV.UK)"
 )
-CHECK_L2 = ""
+CHECK_L2 = (
+    "Akvan (20 Nov · IMD) · Shenzhen summit (19 Nov · The Hindu) · "
+    "ICJ ruling (19 Nov · ICJ) · GTA VI (19 Nov · Rockstar)"
+)
 
 
 def space_note(data):
@@ -307,6 +319,8 @@ def _date_check(draw, y):
     lead_w = text_w(draw, CHECK_LEAD.rstrip(), lead)
     draw.text((tx, y + 8), CHECK_LEAD, font=lead, fill=C.INK)
     draw.text((tx + int(lead_w) + 4, y + 8), CHECK_L1, font=body,
+              fill=C.INK)
+    draw.text((tx + int(lead_w) + 4, y + 21), CHECK_L2, font=body,
               fill=C.INK)
 
 
