@@ -1,6 +1,6 @@
 {
  "date_line": "Saturday 21 November 2026",
- "printed_total": 41,
+ "printed_total": 39,
  "stories": [
   {
    "dek": "Draft cut 144→80 paragraphs; fossil-fuel language gone; third draft due Saturday morning",
@@ -9,7 +9,7 @@
    "kicker_date": "21 NOV",
    "num": 1,
    "place": "ANTALYA",
-   "region": "Global",
+   "region": "Europe",
    "scene": "plenary",
    "source_section": "A",
    "sources": [
@@ -37,7 +37,7 @@
    "tier": "hero"
   },
   {
-   "dek": "Deep quake felt in Lima; no deaths, no tsunami risk",
+   "dek": "108 km deep near Carhuamayo, Junín; 00:09 UTC; no deaths, no tsunami risk",
    "headline": "Magnitude 6.7 quake shakes Peru",
    "id": "A2",
    "kicker_date": "21 NOV",
@@ -87,18 +87,17 @@
    "tier": "card"
   },
   {
-   "dek": "First such visit since 2023",
-   "headline": "Pakistan minister at Delhi forum",
-   "id": "A51",
+   "dek": "IRGC claims MQ-9; no US confirmation",
+   "headline": "Iran: US drone downed",
+   "id": "A37",
    "kicker_date": "21 NOV",
    "num": 6,
-   "place": "NEW DELHI",
-   "region": "Asia",
-   "scene": "forum",
+   "place": "STRAIT OF HORMUZ",
+   "region": "Middle East",
+   "scene": "hormuz",
    "source_section": "A",
    "sources": [
-    "Dawn",
-    "Bloomberg"
+    "Al Jazeera"
    ],
    "tier": "card"
   },
@@ -134,7 +133,7 @@
    "tier": "card"
   },
   {
-   "dek": "Copenhagen cites murder plot",
+   "dek": "Assassination plot; two Danes charged",
    "headline": "Denmark expels envoy over plot",
    "id": "A6",
    "kicker_date": "21 NOV",
@@ -149,27 +148,7 @@
    "tier": "card"
   },
   {
-   "brief": "Boat of mourners capsizes in Nigeria; 4+ dead",
-   "id": "A7",
-   "kicker_date": "21 NOV",
-   "num": 12,
-   "place": "NIGERIA",
-   "region": "Africa",
-   "source_section": "A",
-   "tier": "index"
-  },
-  {
-   "brief": "Texas execution takes 63 minutes; prisoner moans",
-   "id": "A9",
-   "kicker_date": "21 NOV",
-   "num": 13,
-   "place": "TEXAS",
-   "region": "Americas",
-   "source_section": "A",
-   "tier": "index"
-  },
-  {
-   "dek": "14+ tankers ready a convoy",
+   "dek": "14+ tankers mass to test US blockade",
    "headline": "Tankers mass at Kharg Island",
    "id": "A14",
    "kicker_date": "21 NOV",
@@ -183,286 +162,6 @@
     "AP"
    ],
    "tier": "card"
-  },
-  {
-   "brief": "Bangladesh hit by fresh arson attacks",
-   "id": "A40",
-   "kicker_date": "21 NOV",
-   "num": 14,
-   "place": "DHAKA",
-   "region": "Asia",
-   "source_section": "A",
-   "tier": "index"
-  },
-  {
-   "brief": "Iraqi forces retake Jurf al-Sakhar militia stronghold",
-   "id": "A8",
-   "kicker_date": "21 NOV",
-   "num": 15,
-   "place": "IRAQ",
-   "region": "Middle East",
-   "source_section": "A",
-   "tier": "index"
-  },
-  {
-   "brief": "Migrant caravan of ~300 crosses into southern Mexico",
-   "id": "A10",
-   "kicker_date": "21 NOV",
-   "num": 16,
-   "place": "MEXICO",
-   "region": "Americas",
-   "source_section": "A",
-   "tier": "index"
-  },
-  {
-   "brief": "US judge questions Trump refugee policies",
-   "id": "A11",
-   "kicker_date": "21 NOV",
-   "num": 17,
-   "place": "WASHINGTON",
-   "region": "Americas",
-   "source_section": "A",
-   "tier": "index"
-  },
-  {
-   "brief": "Vance: Iran strikes were Trump's call alone",
-   "id": "A12",
-   "kicker_date": "21 NOV",
-   "num": 18,
-   "place": "WASHINGTON",
-   "region": "Americas",
-   "source_section": "A",
-   "tier": "index"
-  },
-  {
-   "brief": "Congress split over shutdown",
-   "id": "A13",
-   "kicker_date": "21 NOV",
-   "num": 19,
-   "place": "WASHINGTON",
-   "region": "Americas",
-   "source_section": "A",
-   "tier": "index"
-  },
-  {
-   "brief": "Pentagon puts Iran war cost at $48.3bn",
-   "id": "A15",
-   "kicker_date": "21 NOV",
-   "num": 20,
-   "place": "WASHINGTON",
-   "region": "Americas",
-   "source_section": "A",
-   "tier": "index"
-  },
-  {
-   "brief": "Trump threatens tax on AI centres abroad",
-   "id": "A16",
-   "kicker_date": "21 NOV",
-   "num": 21,
-   "place": "WASHINGTON",
-   "region": "Americas",
-   "source_section": "A",
-   "tier": "index"
-  },
-  {
-   "brief": "US lawmakers push tougher AI chip rules on China",
-   "id": "A17",
-   "kicker_date": "21 NOV",
-   "num": 22,
-   "place": "WASHINGTON",
-   "region": "Americas",
-   "source_section": "A",
-   "tier": "index"
-  },
-  {
-   "brief": "Depardieu and Houellebecq face gang-rape probe",
-   "id": "A18",
-   "kicker_date": "21 NOV",
-   "num": 23,
-   "place": "PARIS",
-   "region": "Europe",
-   "source_section": "A",
-   "tier": "index"
-  },
-  {
-   "brief": "French police sentenced over Zecler beating",
-   "id": "A19",
-   "kicker_date": "21 NOV",
-   "num": 24,
-   "place": "PARIS",
-   "region": "Europe",
-   "source_section": "A",
-   "tier": "index"
-  },
-  {
-   "brief": "Mamdani plans to close Rikers Island by 2032",
-   "id": "A20",
-   "kicker_date": "21 NOV",
-   "num": 25,
-   "place": "NEW YORK",
-   "region": "Americas",
-   "source_section": "A",
-   "tier": "index"
-  },
-  {
-   "brief": "Nearly 600 women killed in South Africa in 3 months",
-   "id": "A21",
-   "kicker_date": "21 NOV",
-   "num": 26,
-   "place": "PRETORIA",
-   "region": "Africa",
-   "source_section": "A",
-   "tier": "index"
-  },
-  {
-   "brief": "US declassifies UFO footage",
-   "id": "A22",
-   "kicker_date": "21 NOV",
-   "num": 27,
-   "place": "WASHINGTON",
-   "region": "Americas",
-   "source_section": "A",
-   "tier": "index"
-  },
-  {
-   "brief": "ANC fights to hold South Africa's key cities",
-   "id": "A23",
-   "kicker_date": "21 NOV",
-   "num": 28,
-   "place": "PRETORIA",
-   "region": "Africa",
-   "source_section": "A",
-   "tier": "index"
-  },
-  {
-   "brief": "Cyclone Xavier weakens; relief on standby",
-   "id": "A24",
-   "kicker_date": "21 NOV",
-   "num": 29,
-   "place": "COOK ISLANDS",
-   "region": "Oceania",
-   "source_section": "A",
-   "tier": "index"
-  },
-  {
-   "brief": "Pacific warns on fossil fuels at COP31",
-   "id": "A25",
-   "kicker_date": "21 NOV",
-   "num": 30,
-   "place": "ANTALYA",
-   "region": "Oceania",
-   "source_section": "A",
-   "tier": "index"
-  },
-  {
-   "brief": "Russia cries 'new Iron Curtain' as Estonia shuts borders",
-   "id": "A26",
-   "kicker_date": "21 NOV",
-   "num": 31,
-   "place": "TALLINN",
-   "region": "Europe",
-   "source_section": "A",
-   "tier": "index"
-  },
-  {
-   "brief": "Israeli drone strikes kill seven in central Gaza",
-   "id": "A27",
-   "kicker_date": "21 NOV",
-   "num": 32,
-   "place": "GAZA",
-   "region": "Middle East",
-   "source_section": "A",
-   "tier": "index"
-  },
-  {
-   "brief": "Two Salvadoran soldiers killed handling explosives",
-   "id": "A28",
-   "kicker_date": "21 NOV",
-   "num": 33,
-   "place": "HAITI",
-   "region": "Americas",
-   "source_section": "A",
-   "tier": "index"
-  },
-  {
-   "brief": "Africa's new credit agency aims to change ratings",
-   "id": "A29",
-   "kicker_date": "21 NOV",
-   "num": 34,
-   "place": "PORT LOUIS",
-   "region": "Africa",
-   "source_section": "A",
-   "tier": "index"
-  },
-  {
-   "brief": "Poland bars Russian skaters",
-   "id": "A30",
-   "kicker_date": "21 NOV",
-   "num": 35,
-   "place": "WARSAW",
-   "region": "Europe",
-   "source_section": "A",
-   "tier": "index"
-  },
-  {
-   "brief": "Drone attacks hit Russian regions; 2 hurt in Belgorod",
-   "id": "A31",
-   "kicker_date": "21 NOV",
-   "num": 36,
-   "place": "BELGOROD",
-   "region": "Europe",
-   "source_section": "A",
-   "tier": "index"
-  },
-  {
-   "brief": "Iran names condition for talks with the US",
-   "id": "A32",
-   "kicker_date": "21 NOV",
-   "num": 37,
-   "place": "TEHRAN",
-   "region": "Middle East",
-   "source_section": "A",
-   "tier": "index"
-  },
-  {
-   "brief": "Actor Vladimir Ustinov dies aged 84",
-   "id": "A33",
-   "kicker_date": "21 NOV",
-   "num": 38,
-   "place": "MOSCOW",
-   "region": "Europe",
-   "source_section": "A",
-   "tier": "index"
-  },
-  {
-   "brief": "Russell fastest in final Las Vegas GP practice",
-   "id": "A36",
-   "kicker_date": "21 NOV",
-   "num": 39,
-   "place": "LAS VEGAS",
-   "region": "Americas",
-   "source_section": "A",
-   "tier": "index"
-  },
-  {
-   "brief": "Gaza's displaced children mark Children's Day",
-   "id": "A38",
-   "kicker_date": "21 NOV",
-   "num": 40,
-   "place": "GAZA",
-   "region": "Middle East",
-   "source_section": "A",
-   "tier": "index"
-  },
-  {
-   "brief": "Bitcoin $58,983, −3.9% — CoinGecko, 02:08 UTC",
-   "id": "A77",
-   "kicker_date": "21 NOV",
-   "num": 41,
-   "place": "MARKETS",
-   "region": "Global",
-   "source_section": "A",
-   "tier": "index"
   },
   {
    "dek": "Burn 19:24 CET; unconfirmed at press time",
@@ -479,6 +178,286 @@
     "ESA"
    ],
    "tier": "card"
+  },
+  {
+   "brief": "NIGERIA — Boat of mourners capsizes; 4+ dead (AJ)",
+   "id": "A7",
+   "kicker_date": "21 NOV",
+   "num": 12,
+   "place": "NIGERIA",
+   "region": "Africa",
+   "source_section": "A",
+   "tier": "index"
+  },
+  {
+   "brief": "TEXAS — Prisoner moans in 63-minute execution (Dunya)",
+   "id": "A9",
+   "kicker_date": "21 NOV",
+   "num": 13,
+   "place": "TEXAS",
+   "region": "Americas",
+   "source_section": "A",
+   "tier": "index"
+  },
+  {
+   "brief": "DHAKA — Fresh arson attacks amid unrest (Dawn)",
+   "id": "A40",
+   "kicker_date": "21 NOV",
+   "num": 14,
+   "place": "DHAKA",
+   "region": "Asia",
+   "source_section": "A",
+   "tier": "index"
+  },
+  {
+   "brief": "IRAQ — Forces retake Jurf al-Sakhar stronghold (Dawn)",
+   "id": "A8",
+   "kicker_date": "21 NOV",
+   "num": 15,
+   "place": "IRAQ",
+   "region": "Middle East",
+   "source_section": "A",
+   "tier": "index"
+  },
+  {
+   "brief": "MEXICO — Migrant caravan of ~300 crosses south (Dunya)",
+   "id": "A10",
+   "kicker_date": "21 NOV",
+   "num": 16,
+   "place": "MEXICO",
+   "region": "Americas",
+   "source_section": "A",
+   "tier": "index"
+  },
+  {
+   "brief": "WASHINGTON — Pentagon puts Iran war cost at $48.3bn (Dawn)",
+   "id": "A15",
+   "kicker_date": "21 NOV",
+   "num": 17,
+   "place": "WASHINGTON",
+   "region": "Americas",
+   "source_section": "A",
+   "tier": "index"
+  },
+  {
+   "brief": "WASHINGTON — Trump threatens tax on AI centres abroad (AJ)",
+   "id": "A16",
+   "kicker_date": "21 NOV",
+   "num": 18,
+   "place": "WASHINGTON",
+   "region": "Americas",
+   "source_section": "A",
+   "tier": "index"
+  },
+  {
+   "brief": "PARIS — Depardieu, Houellebecq face gang-rape probe (Dawn)",
+   "id": "A18",
+   "kicker_date": "21 NOV",
+   "num": 19,
+   "place": "PARIS",
+   "region": "Europe",
+   "source_section": "A",
+   "tier": "index"
+  },
+  {
+   "brief": "PARIS — Police sentenced over Zecler beating (Jabulani)",
+   "id": "A19",
+   "kicker_date": "21 NOV",
+   "num": 20,
+   "place": "PARIS",
+   "region": "Europe",
+   "source_section": "A",
+   "tier": "index"
+  },
+  {
+   "brief": "PRETORIA — Nearly 600 women killed in 3 months (Jabulani)",
+   "id": "A21",
+   "kicker_date": "21 NOV",
+   "num": 21,
+   "place": "PRETORIA",
+   "region": "Africa",
+   "source_section": "A",
+   "tier": "index"
+  },
+  {
+   "brief": "PRETORIA — ANC fights to hold key cities (Jabulani)",
+   "id": "A23",
+   "kicker_date": "21 NOV",
+   "num": 22,
+   "place": "PRETORIA",
+   "region": "Africa",
+   "source_section": "A",
+   "tier": "index"
+  },
+  {
+   "brief": "COOK ISLANDS — Cyclone Xavier weakens; relief on standby (RNZ)",
+   "id": "A24",
+   "kicker_date": "21 NOV",
+   "num": 23,
+   "place": "COOK ISLANDS",
+   "region": "Oceania",
+   "source_section": "A",
+   "tier": "index"
+  },
+  {
+   "brief": "ANTALYA — Pacific warns on fossil fuels at COP31 (RNZ)",
+   "id": "A25",
+   "kicker_date": "21 NOV",
+   "num": 24,
+   "place": "ANTALYA",
+   "region": "Oceania",
+   "source_section": "A",
+   "tier": "index"
+  },
+  {
+   "brief": "TALLINN — Estonia shuts borders; 'new Iron Curtain' (AJ)",
+   "id": "A26",
+   "kicker_date": "21 NOV",
+   "num": 25,
+   "place": "TALLINN",
+   "region": "Europe",
+   "source_section": "A",
+   "tier": "index"
+  },
+  {
+   "brief": "GAZA — Israeli drone strikes kill seven in central Gaza (AJ)",
+   "id": "A27",
+   "kicker_date": "21 NOV",
+   "num": 26,
+   "place": "GAZA",
+   "region": "Middle East",
+   "source_section": "A",
+   "tier": "index"
+  },
+  {
+   "brief": "HAITI — Two Salvadoran soldiers killed handling explosives (AJ)",
+   "id": "A28",
+   "kicker_date": "21 NOV",
+   "num": 27,
+   "place": "HAITI",
+   "region": "Americas",
+   "source_section": "A",
+   "tier": "index"
+  },
+  {
+   "brief": "PORT LOUIS — New agency aims to change African ratings (AJ)",
+   "id": "A29",
+   "kicker_date": "21 NOV",
+   "num": 28,
+   "place": "PORT LOUIS",
+   "region": "Africa",
+   "source_section": "A",
+   "tier": "index"
+  },
+  {
+   "brief": "WARSAW — Poland bars Russian skaters from cup (Izvestia)",
+   "id": "A30",
+   "kicker_date": "21 NOV",
+   "num": 29,
+   "place": "WARSAW",
+   "region": "Europe",
+   "source_section": "A",
+   "tier": "index"
+  },
+  {
+   "brief": "BELGOROD — Drone attacks hit Russian regions; 2 hurt (Izvestia)",
+   "id": "A31",
+   "kicker_date": "21 NOV",
+   "num": 30,
+   "place": "BELGOROD",
+   "region": "Europe",
+   "source_section": "A",
+   "tier": "index"
+  },
+  {
+   "brief": "TEHRAN — Iran names condition for talks with the US (Izvestia)",
+   "id": "A32",
+   "kicker_date": "21 NOV",
+   "num": 31,
+   "place": "TEHRAN",
+   "region": "Middle East",
+   "source_section": "A",
+   "tier": "index"
+  },
+  {
+   "brief": "MOSCOW — Actor Vladimir Ustinov dies aged 84 (Izvestia)",
+   "id": "A33",
+   "kicker_date": "21 NOV",
+   "num": 32,
+   "place": "MOSCOW",
+   "region": "Europe",
+   "source_section": "A",
+   "tier": "index"
+  },
+  {
+   "brief": "LAS VEGAS — Russell fastest in final Las Vegas GP practice (F1)",
+   "id": "A36",
+   "kicker_date": "21 NOV",
+   "num": 33,
+   "place": "LAS VEGAS",
+   "region": "Americas",
+   "source_section": "A",
+   "tier": "index"
+  },
+  {
+   "brief": "GAZA — Displaced children mark Children's Day (AJ)",
+   "id": "A38",
+   "kicker_date": "21 NOV",
+   "num": 34,
+   "place": "GAZA",
+   "region": "Middle East",
+   "source_section": "A",
+   "tier": "index"
+  },
+  {
+   "brief": "MARKETS — Bitcoin $58,983, −3.9% at 02:08 UTC (CoinGecko)",
+   "id": "A77",
+   "kicker_date": "21 NOV",
+   "num": 35,
+   "place": "MARKETS",
+   "region": "Global",
+   "source_section": "A",
+   "tier": "index"
+  },
+  {
+   "brief": "NEW DELHI — First Pakistan SCO visit since 2023 (Dawn)",
+   "id": "A51",
+   "kicker_date": "21 NOV",
+   "num": 36,
+   "place": "NEW DELHI",
+   "region": "Asia",
+   "source_section": "A",
+   "tier": "index"
+  },
+  {
+   "brief": "HORMUZ — Seafarer missing after 2nd LPG attack (The Hindu)",
+   "id": "A44",
+   "kicker_date": "21 NOV",
+   "num": 37,
+   "place": "STRAIT OF HORMUZ",
+   "region": "Asia",
+   "source_section": "A",
+   "tier": "index"
+  },
+  {
+   "brief": "INDIA — NIA asks UAE to probe flydubai copilot (The Hindu)",
+   "id": "A45",
+   "kicker_date": "21 NOV",
+   "num": 38,
+   "place": "INDIA",
+   "region": "Asia",
+   "source_section": "A",
+   "tier": "index"
+  },
+  {
+   "brief": "MYANMAR — Rights groups urge sanctions after court ruling (AP)",
+   "id": "A63",
+   "kicker_date": "21 NOV",
+   "num": 39,
+   "place": "MYANMAR",
+   "region": "Asia",
+   "source_section": "A",
+   "tier": "index"
   }
  ]
 }

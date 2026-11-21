@@ -274,9 +274,10 @@ def paint_seismo(img, draw, box, story):
 
 
 def paint_march(img, draw, box, story):
-    """Gen Z march: two large placards at card scale, flags above,
-    two rows of large heads below — the placards, not the heads,
-    carry the scene."""
+    """Gen Z march: three word-bearing placards (JOBS / RENT /
+    CLIMATE — the living-cost demands the story reports), flags
+    above, and three rows of heads for crowd depth — the words,
+    not a repeated numeral, carry the scene."""
     x, y, w, h = box
     draw.rectangle([x, y, x + w, y + h], fill=(214, 206, 190))
     # flags along the top
@@ -288,18 +289,29 @@ def paint_march(img, draw, box, story):
                        fill=(60, 56, 50))
         draw.rectangle([fx + 2, y + h * 0.04, fx + w * 0.10,
                         y + h * 0.15], fill=col)
-    # two big placards on sticks, text large enough to read at 480 px
-    for px, txt, size in ((0.10, "FUTURE", 12), (0.58, "25", 22)):
-        draw.rectangle([x + w * (px + 0.10), y + h * 0.52,
-                        x + w * (px + 0.10) + 2, y + h * 0.72],
+    # three placards on sticks, words large enough to read at
+    # 480 px; the boxes start below the scene chip (which occupies
+    # the top 21 px) so no placard slides under it, and the words
+    # sit inside the boxes with clear air on every side
+    for px, txt, size in ((0.03, "JOBS", 12), (0.35, "RENT", 12),
+                          (0.66, "CLIMATE", 10)):
+        draw.rectangle([x + w * (px + 0.13), y + h * 0.62,
+                        x + w * (px + 0.13) + 2, y + h * 0.82],
                        fill=(60, 56, 50))
-        draw.rectangle([x + w * px, y + h * 0.28, x + w * (px + 0.32),
-                        y + h * 0.54], fill=(248, 244, 236),
+        draw.rectangle([x + w * px, y + h * 0.34, x + w * (px + 0.30),
+                        y + h * 0.62], fill=(248, 244, 236),
                        outline=(24, 22, 20), width=2)
-        draw.text((x + w * (px + 0.03), y + h * 0.33), txt,
+        draw.text((x + w * (px + 0.025), y + h * 0.395), txt,
                   font=get_font(C.SANS_BOLD, size), fill=(24, 22, 20))
-    # two rows of heads, large and few
-    rows = [(0.68, 0.10, 7), (0.84, 0.10, 6)]
+    # crowd depth: a back row of smaller heads behind the placards,
+    # then two rows of large heads below
+    hairs = [(30, 28, 26), (60, 44, 30), (18, 18, 18), (120, 90, 60)]
+    skins = [SKIN, SKIN_D, (214, 170, 130)]
+    for i in range(9):
+        hx = x + w * (0.05 + 0.90 * i / 8)
+        _head(draw, hx, y + h * 0.70, h * 0.06,
+              hairs[i % len(hairs)], skins[i % len(skins)])
+    rows = [(0.78, 0.09, 7), (0.88, 0.09, 6)]
     hairs = [(30, 28, 26), (60, 44, 30), (18, 18, 18), (120, 90, 60)]
     skins = [SKIN, SKIN_D, (214, 170, 130)]
     for ry, rr, count in rows:
@@ -587,6 +599,64 @@ def paint_tankers(img, draw, box, story):
              180, 360, fill=(24, 22, 20), width=2)
 
 
+def paint_hormuz(img, draw, box, story):
+    """Strait of Hormuz at dusk: the two headlands narrow the
+    channel, a tanker sails it, and an MQ-9 crosses the sky inside
+    a dashed claim reticle — the dashed ring, not a hit, is what
+    the scene asserts: a claim, unconfirmed."""
+    x, y, w, h = box
+    # dusk sky, lighter at the top
+    draw.rectangle([x, y, x + w, y + h * 0.58], fill=(240, 196, 130))
+    draw.rectangle([x, y + h * 0.30, x + w, y + h * 0.58],
+                   fill=(232, 176, 116))
+    # low sun over the strait
+    draw.ellipse([x + w * 0.44, y + h * 0.30, x + w * 0.54,
+                  y + h * 0.48], fill=(255, 220, 140))
+    # headlands: Iran to the left, Oman to the right, the channel
+    # narrowing between them at the horizon
+    draw.polygon([(x, y + h * 0.30), (x + w * 0.30, y + h * 0.50),
+                  (x + w * 0.35, y + h * 0.58), (x, y + h * 0.58)],
+                 fill=(96, 74, 58))
+    draw.polygon([(x + w, y + h * 0.26), (x + w * 0.71, y + h * 0.48),
+                  (x + w * 0.66, y + h * 0.58), (x + w, y + h * 0.58)],
+                 fill=(84, 64, 50))
+    # the sea below the horizon line
+    draw.rectangle([x, y + h * 0.58, x + w, y + h], fill=SEA)
+    for wy in (0.68, 0.82, 0.93):
+        for i in range(4):
+            cx = x + w * (0.05 + 0.25 * i)
+            draw.arc([cx, y + h * wy, cx + w * 0.16, y + h * (wy + 0.08)],
+                     180, 360, fill=(170, 196, 214), width=2)
+    # the tanker in the channel: hull, deck line, superstructure
+    hx0, hy = x + w * 0.36, y + h * 0.64
+    hw = w * 0.30
+    draw.rectangle([hx0, hy, hx0 + hw, hy + h * 0.11], fill=(30, 34, 44))
+    draw.rectangle([hx0, hy + h * 0.11, hx0 + hw, hy + h * 0.135],
+                   fill=(178, 40, 40))
+    draw.rectangle([hx0 + hw * 0.08, hy - h * 0.11, hx0 + hw * 0.22,
+                    hy], fill=(200, 200, 196))
+    draw.rectangle([hx0 + hw * 0.13, hy - h * 0.19, hx0 + hw * 0.16,
+                    hy - h * 0.11], fill=(150, 60, 50))
+    # the MQ-9: long straight wing, slender body, V-tail, top right
+    dx, dy = x + w * 0.80, y + h * 0.20
+    draw.line([dx - w * 0.085, dy + h * 0.015, dx + w * 0.085,
+               dy - h * 0.015], fill=(24, 22, 20), width=3)
+    draw.line([dx - w * 0.045, dy - h * 0.045, dx + w * 0.045,
+               dy + h * 0.045], fill=(24, 22, 20), width=2)
+    draw.line([dx + w * 0.038, dy - h * 0.038, dx + w * 0.062,
+               dy - h * 0.085], fill=(24, 22, 20), width=2)
+    draw.line([dx + w * 0.038, dy - h * 0.038, dx + w * 0.070,
+               dy - h * 0.030], fill=(24, 22, 20), width=2)
+    draw.ellipse([dx - 3, dy - h * 0.045 - 3, dx + 3, dy - h * 0.045 + 3],
+                 fill=(24, 22, 20))
+    # dashed claim reticle around the drone (segments, not a ring)
+    rx, ry = w * 0.115, h * 0.21
+    for a0 in range(0, 360, 36):
+        draw.arc([dx - rx, dy - h * 0.02 - ry, dx + rx,
+                  dy - h * 0.02 + ry], a0, a0 + 20,
+                 fill=(158, 32, 28), width=2)
+
+
 def paint_forum(img, draw, box, story):
     """New Delhi: the SCO forum's colonnaded hall — rows of member
     flags on the lawn, delegates arriving at the steps, a banner
@@ -753,11 +823,24 @@ MAP_PINS = [
     (3, 0.235, 0.62),   # Carhuamayo, Peru
     (4, 0.455, 0.22),   # Europe (Gen Z)
     (5, 0.800, 0.52),   # Davao
-    (6, 0.685, 0.38),   # New Delhi
+    (6, 0.690, 0.47),   # Strait of Hormuz
     (7, 0.905, 0.82),   # Wellington
     (8, 0.260, 0.75),   # Tupanciretã, Brazil
     (9, 0.500, 0.10),   # Copenhagen
     (10, 0.640, 0.33),  # Kharg Island
+]
+
+# Small continent labels for the map band (map-local fractions,
+# top-left of the label).  Placed over the dot field or the ocean
+# gaps, clear of every pin disc; set in bold at 7 pt so they read
+# at native size without crowding the 480 px view.
+MAP_LABELS = [
+    (0.040, 0.06, "NORTH AMERICA"),
+    (0.175, 0.88, "SOUTH AMERICA"),
+    (0.408, 0.06, "EUROPE"),
+    (0.420, 0.60, "AFRICA"),
+    (0.700, 0.06, "ASIA"),
+    (0.820, 0.90, "OCEANIA"),
 ]
 
 
@@ -785,6 +868,10 @@ def paint_map(draw, box):
                 if nx * nx + ny * ny <= 1.0:
                     draw.ellipse([gx - 2, gy - 2, gx + 2, gy + 2],
                                  fill=dot)
+    lab_face = get_font(C.SANS_BOLD, 7)
+    for fx, fy, label in MAP_LABELS:
+        draw.text((x + w * fx, y + h * fy), label, font=lab_face,
+                  fill=(52, 48, 44))
     face = get_font(C.SANS_BOLD, 13)
     for num, fx, fy in MAP_PINS:
         px, py = x + w * fx, y + h * fy
@@ -811,6 +898,7 @@ PAINTERS = {
     "capsize": paint_capsize,
     "cell": paint_cell,
     "tankers": paint_tankers,
+    "hormuz": paint_hormuz,
     "forum": paint_forum,
     "orbit": paint_orbit,
     "arson": paint_arson,
@@ -828,6 +916,7 @@ LABELS = {
     "capsize": ("4 DEAD", "left"),
     "cell": ("63 MIN", "right"),
     "tankers": ("KHARG", "left"),
+    "hormuz": ("MQ-9 CLAIM", "left"),
     "forum": ("SCO FORUM", "right"),
     "orbit": ("19:24 CET", "right"),
     "arson": ("ARSON", "left"),

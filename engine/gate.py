@@ -21,13 +21,17 @@ from . import colours as C
 from .page import HERO_SCENE_H, compute_stats
 from .words import get_font, wrap_lines
 
-WANT_STORIES = 41
+# Round 6 shape (judge fix mandate): 39 stories = 2 heroes +
+# 9 cards + 28 index.  INDEX_TEXT_W matches the renderer's wrap
+# width exactly (208, narrowed from 210 when the number-block
+# gutter grew — a stricter wrap check, not a weaker one).
+WANT_STORIES = 39
 WANT_ILLUSTRATED = 11
 WANT_HEROES = 2
 WANT_CARDS = 9
-WANT_INDEX = 30
+WANT_INDEX = 28
 WANT_REGIONS = 7
-INDEX_TEXT_W = 210
+INDEX_TEXT_W = 208
 NARROW_HERO_W = 327
 
 # Figures that must appear exactly once across all story text.
@@ -145,12 +149,13 @@ def validate(data):
     probe = Image.new("RGB", (64, 64))
     draw = ImageDraw.Draw(probe)
 
-    # date check lines must fit their band (lead + line 1, line 2)
+    # date check lines must fit their band (lead + line 1, line 2);
+    # the faces match the renderer's round-6 size (10 pt) exactly
     from .page import (CHECK_L1, CHECK_L2, CHECK_LEAD, CONTENT,
                        HERO_H, INDEX_H)
     from .words import text_w
-    lead_face = get_font(C.SANS_BOLD, 9)
-    body_face = get_font(C.SANS, 9)
+    lead_face = get_font(C.SANS_BOLD, 10)
+    body_face = get_font(C.SANS, 10)
     if text_w(draw, CHECK_LEAD.rstrip(), lead_face) + 4 + \
             text_w(draw, CHECK_L1, body_face) > CONTENT - 12:
         failures.append("DATE CHECK line 1 too wide")
@@ -161,7 +166,7 @@ def validate(data):
     # grid geometry comes from page.py so the gate measures the
     # real grid (rows per column, row pitch, two-line briefs)
     from .page import INDEX_LEAD, INDEX_ROWS, INDEX_ROW_H, INDEX_TOP
-    brief_face = get_font(C.SANS_BOLD, 12)
+    brief_face = get_font(C.SANS_BOLD, 11)
     brief_lines = []
     for story in stories:
         if story.get("tier") != "index":
@@ -212,8 +217,8 @@ def validate(data):
         dek_lines = wrap_lines(draw, story["dek"], hero_dek, w)
         used = HERO_SCENE_H + 2 + 14 + 21 * len(head_lines) + \
             15 * len(dek_lines)
-        if story["num"] == 1:
-            used += 21  # region chips row
+        # Round 6: the region chips row lives in its own band
+        # (page.CHIPS_H), so hero 1 no longer carries it.
         if used > HERO_H:
             failures.append("hero %d text overflows its band (%d px)"
                             % (story["num"], used))

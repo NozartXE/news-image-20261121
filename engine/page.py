@@ -3,8 +3,14 @@
 The page is a stack of horizontal bands whose heights sum to the
 1024 px canvas::
 
-    kicker 20 + date 88 + figure strip 42 + hero row 285
-    + cards 252 + map 74 + index 211 + date check 39 + footer 13 = 1024
+    kicker 20 + date 88 + figure strip 42 + hero row 252
+    + cards 252 + region row 21 + map 74 + index 223
+    + date check 39 + footer 13 = 1024
+
+Round 6: the hero band gives up 33 px (scene 190 -> 160, both
+painters fractional) to fund a labelled full-width region row
+below the cards and a deeper index band, so every index brief can
+carry its place and source tag inside the gate's depth check.
 
 The map band is funded by trimming band heights (index rows,
 DATE CHECK to one line, hero/cards/kicker/strip/footer trims) —
@@ -31,24 +37,25 @@ RIGHT = MARGIN + CONTENT
 KICKER_H = 20
 DATE_H = 88
 STRIP_H = 42
-HERO_H = 285
+HERO_H = 252
 CARDS_H = 252
+CHIPS_H = 21
 MAP_H = 74
-INDEX_H = 211
+INDEX_H = 223
 CHECK_H = 39
 FOOTER_H = 13
 
 # Index grid: four columns; a column holds eight briefs.  The
 # grid starts INDEX_TOP px into the band and rows are INDEX_ROW_H
 # apart; a brief's lines advance INDEX_LEAD px each.  The deepest
-# brief (row 7, one line) bottoms at 20 + 7*25 + 14 = 209 px,
-# inside the 211 px band — the gate measures this per brief.
+# brief (row 7, two lines) bottoms at 20 + 7*25 + 28 = 223 px,
+# exactly the 223 px band — the gate measures this per brief.
 INDEX_ROWS = 8
 INDEX_ROW_H = 25
 INDEX_TOP = 20
 INDEX_LEAD = 14
 
-HERO_SCENE_H = 190
+HERO_SCENE_H = 160
 HERO1_W = 655
 HERO_GAP = 10
 HERO2_W = CONTENT - HERO1_W - HERO_GAP
@@ -66,9 +73,9 @@ STRIP = [
     ("6.7", "PERU QUAKE MAGNITUDE"),
     ("$58,983", "BITCOIN −3.9% · 02:08 UTC"),
     ("124*", "RAHUL · WELLINGTON"),
-    ("114", "BRAZIL STORM GUSTS"),
+    ("114 km/h", "BRAZIL STORM GUSTS"),
     ("146", "SAFE · DAVAO LANDING"),
-    ("144→80", "COP31 DRAFT CUT"),
+    ("144→80", "COP31 DRAFT PARAS CUT"),
 ]
 
 CHECK_LEAD = "DATE CHECK — NOT TODAY: "
@@ -88,6 +95,13 @@ CHECK_LEAD = "DATE CHECK — NOT TODAY: "
 # (Poland), Kyiv Independent (Kryvyi Rih wire), GOV.UK (UK–EU
 # deal), IMD (Akvan authority), The Hindu (Shenzhen trilateral),
 # ICJ (Press Release 2026/27), Rockstar (GTA VI publisher).
+# Round 6: two more genuine exclusions join line 2 — the Gupta
+# sentence (dossier B9, Fri 20 Nov, The Hindu) and Voyager 1's
+# light-day (dossier B11, 18 Nov; the NASA tag was verified
+# against NASA's own news release in-session: the milestone fell
+# at 2:16 a.m. PST on Nov. 18).  Line 2 is drawn flush-left, so
+# the gate's full-width budget (CONTENT - 12) is its real budget;
+# at the round-6 size of 10 pt the line measures ~955 px.
 CHECK_L1 = (
     "Wall Street (20 Nov · Daily Brief) · Poland missile "
     "(20 Nov · Reuters) · Kryvyi Rih (20 Nov · Kyiv Independent) · "
@@ -95,7 +109,9 @@ CHECK_L1 = (
 )
 CHECK_L2 = (
     "Akvan (20 Nov · IMD) · Shenzhen summit (19 Nov · The Hindu) · "
-    "ICJ ruling (19 Nov · ICJ) · GTA VI (19 Nov · Rockstar)"
+    "ICJ ruling (19 Nov · ICJ) · GTA VI (19 Nov · Rockstar) · "
+    "Gupta sentence (20 Nov · The Hindu) · "
+    "Voyager light-day (18 Nov · NASA)"
 )
 
 
@@ -169,23 +185,28 @@ def _strip(draw, y):
               fill=C.HAIRLINE)
 
 
-def _chips(draw, x, y, counts):
-    """Region chips: REGIONS: followed by one boxed count per region."""
-    lead = get_font(C.SANS_BOLD, 8)
-    chip = get_font(C.SANS_BOLD, 8)
-    draw.text((x, y + 2), "REGIONS:", font=lead, fill=C.ACCENT)
-    cx = x + int(text_w(draw, "REGIONS:", lead)) + 7
+def _region_row(draw, y, counts):
+    """Full-width STORIES BY REGION row: a label, then one boxed
+    count per region.  Round 6 moved this out of hero 1's band,
+    where it read as a COP31 sub-breakdown, into its own band
+    between the card rows and the map."""
+    lead = get_font(C.SANS_BOLD, 10)
+    chip = get_font(C.SANS_BOLD, 9)
+    draw.text((MARGIN, y + 5), "STORIES BY REGION", font=lead,
+              fill=C.ACCENT)
+    cx = MARGIN + int(text_w(draw, "STORIES BY REGION", lead)) + 10
     for region, count in counts:
         label = "%s %d" % (region.upper(), count)
         bb = draw.textbbox((0, 0), label, font=chip)
         cw = bb[2] + 10
-        draw.rectangle([cx, y, cx + cw, y + 13], outline=C.FAINT, width=1)
-        draw.text((cx + 5, y + 2), label, font=chip, fill=C.FAINT)
+        draw.rectangle([cx, y + 3, cx + cw, y + 18], outline=C.FAINT,
+                       width=1)
+        draw.text((cx + 5, y + 6), label, font=chip, fill=C.FAINT)
         cx += cw + 5
     return cx
 
 
-def _hero_text(draw, story, x, w, y_top, counts=None):
+def _hero_text(draw, story, x, w, y_top):
     kick = get_font(C.SANS_BOLD, 10)
     head = get_font(C.SERIF_BOLD, 19)
     dek = get_font(C.SANS, 13)
@@ -202,20 +223,17 @@ def _hero_text(draw, story, x, w, y_top, counts=None):
     for line in wrap_lines(draw, story["dek"], dek, w):
         draw.text((x, ty), line, font=dek, fill=C.SOFT)
         ty += 15
-    if counts:
-        _chips(draw, x, ty + 4, counts)
-        ty += 17
     return ty
 
 
-def _heroes(draw, img, heroes, counts, y):
+def _heroes(draw, img, heroes, y):
     first, second = heroes
     box1 = (MARGIN, y, HERO1_W, HERO_SCENE_H)
     box2 = (MARGIN + HERO1_W + HERO_GAP, y, HERO2_W, HERO_SCENE_H)
     art.paint_scene(img, draw, box1, first)
     art.paint_scene(img, draw, box2, second)
     text_y = y + HERO_SCENE_H + 2
-    _hero_text(draw, first, MARGIN, HERO1_W, text_y, counts=counts)
+    _hero_text(draw, first, MARGIN, HERO1_W, text_y)
     _hero_text(draw, second, MARGIN + HERO1_W + HERO_GAP, HERO2_W,
                text_y)
 
@@ -292,10 +310,14 @@ def _index(draw, briefs, y, stats):
     draw.text((RIGHT - text_w(draw, note, note_face), y + 5), note,
               font=note_face, fill=C.FAINT)
     draw.line([MARGIN, y + 18, RIGHT, y + 18], fill=C.INK)
-    # Four columns of eight rows (30 briefs); rows are INDEX_ROW_H
+    # Four columns of eight rows (28 briefs); rows are INDEX_ROW_H
     # apart starting INDEX_TOP px into the band, so the deepest
     # brief bottoms inside the band (see the constants above).
-    brief_face = get_font(C.SANS_BOLD, 12)
+    # Round 6: briefs carry PLACE — fact (Source) at 11 pt (at
+    # 12 pt the longest sourced briefs provably wrap past two
+    # lines), and the text starts 6 px clear of the number block
+    # (was 4 px, which read as touching in the outer columns).
+    brief_face = get_font(C.SANS_BOLD, 11)
     col_w = CONTENT // 4
     for idx, story in enumerate(briefs):
         col, row = divmod(idx, INDEX_ROWS)
@@ -305,23 +327,24 @@ def _index(draw, briefs, y, stats):
         draw.text((cx + 3, cy + 1), "%d." % story["num"],
                   font=brief_face, fill=C.PAPER)
         ly = cy
-        for line in wrap_lines(draw, story["brief"], brief_face, 210)[:2]:
-            draw.text((cx + 30, ly), line, font=brief_face, fill=C.INK)
+        for line in wrap_lines(draw, story["brief"], brief_face, 208)[:2]:
+            draw.text((cx + 32, ly), line, font=brief_face, fill=C.INK)
             ly += INDEX_LEAD
 
 
 def _date_check(draw, y):
     draw.rectangle([MARGIN, y, RIGHT, y + CHECK_H - 2],
                    outline=C.ACCENT, width=1)
-    lead = get_font(C.SANS_BOLD, 9)
-    body = get_font(C.SANS, 9)
+    lead = get_font(C.SANS_BOLD, 10)
+    body = get_font(C.SANS, 10)
     tx = MARGIN + 6
     lead_w = text_w(draw, CHECK_LEAD.rstrip(), lead)
-    draw.text((tx, y + 8), CHECK_LEAD, font=lead, fill=C.INK)
-    draw.text((tx + int(lead_w) + 4, y + 8), CHECK_L1, font=body,
+    draw.text((tx, y + 7), CHECK_LEAD, font=lead, fill=C.INK)
+    draw.text((tx + int(lead_w) + 4, y + 7), CHECK_L1, font=body,
               fill=C.INK)
-    draw.text((tx + int(lead_w) + 4, y + 21), CHECK_L2, font=body,
-              fill=C.INK)
+    # Line 2 runs flush-left: at ten items it needs the box's full
+    # width (the gate checks it against exactly that budget).
+    draw.text((tx, y + 21), CHECK_L2, font=body, fill=C.INK)
 
 
 def _footer(draw, data, y):
@@ -352,10 +375,12 @@ def build_page(data):
     y += DATE_H
     _strip(draw, y)
     y += STRIP_H
-    _heroes(draw, img, heroes, stats["region_counts"], y)
+    _heroes(draw, img, heroes, y)
     y += HERO_H
     _cards(draw, img, cards, y)
     y += CARDS_H
+    _region_row(draw, y, stats["region_counts"])
+    y += CHIPS_H
     _map(draw, y, space_note(data))
     y += MAP_H
     _index(draw, briefs, y, stats)
