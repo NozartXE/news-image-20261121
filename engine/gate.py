@@ -22,17 +22,19 @@ from .page import HERO_SCENE_H, compute_stats
 from .words import get_font, wrap_lines
 
 WANT_STORIES = 40
-WANT_ILLUSTRATED = 12
+WANT_ILLUSTRATED = 13
 WANT_HEROES = 2
-WANT_CARDS = 10
-WANT_INDEX = 28
+WANT_CARDS = 11
+WANT_INDEX = 27
 WANT_REGIONS = 7
 INDEX_TEXT_W = 210
 NARROW_HERO_W = 327
 
 # Figures that must appear exactly once across all story text.
+# "114" is the Brazil storm gust (card 8 dek); "7/58" was removed
+# with the Starc card — the scorecard dates it 21 Nov 2025, not 2026.
 SINGLE_FIGURES = [
-    "6.7", "$58,983", "124*", "7/58", "146", "144→80", "$48.3bn",
+    "6.7", "$58,983", "124*", "114", "146", "144→80", "$48.3bn",
 ]
 
 # Names belonging to the excluded off-date items; none may appear in
@@ -89,6 +91,14 @@ def validate(data):
     if nums != list(range(1, len(stories) + 1)):
         failures.append("numbering is not 1..%d" % len(stories))
 
+    # map pins must be exactly the illustrated story numbers
+    from . import art
+    pins = [n for n, _, _ in art.MAP_PINS]
+    illustrated_nums = [s["num"] for s in stories if s.get("scene")]
+    if pins != illustrated_nums:
+        failures.append("map pins %r != illustrated %r"
+                        % (pins, illustrated_nums))
+
     for story in stories:
         if story.get("scene"):
             if "21 NOV" not in (story.get("kicker_date") or ""):
@@ -124,7 +134,7 @@ def validate(data):
     draw = ImageDraw.Draw(probe)
 
     # date check lines must fit their band (lead + line 1, line 2)
-    from .page import CHECK_L1, CHECK_L2, CHECK_LEAD, CONTENT
+    from .page import CHECK_L1, CHECK_L2, CHECK_LEAD, CONTENT, HERO_H
     from .words import text_w
     lead_face = get_font(C.SANS_BOLD, 9)
     body_face = get_font(C.SANS, 9)
@@ -178,7 +188,7 @@ def validate(data):
             15 * len(dek_lines)
         if story["num"] == 1:
             used += 21  # region chips row
-        if used > 300:
+        if used > HERO_H:
             failures.append("hero %d text overflows its band (%d px)"
                             % (story["num"], used))
     return failures, warnings, stats

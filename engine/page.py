@@ -3,12 +3,14 @@
 The page is a stack of horizontal bands whose heights sum to the
 1024 px canvas::
 
-    kicker 24 + date 90 + figure strip 48 + hero row 300
-    + cards 260 + index 240 + date check 42 + footer 20 = 1024
+    kicker 20 + date 88 + figure strip 42 + hero row 292
+    + cards 252 + map 74 + index 216 + date check 26 + footer 14 = 1024
 
-Stories are placed by tier: two heroes (a wide lead and a narrower
-second), ten cards in two rows — the lead card spans two columns so
-the quake seismograph reads at any size — and the rest as numbered
+The map band is funded by trimming band heights (index rows,
+DATE CHECK to one line, hero/cards/kicker/strip/footer trims) —
+never by dropping stories.  Stories are placed by tier: two heroes
+(a wide lead and a narrower second), eleven cards in two rows —
+row 1 of 4 (lead card widest), row 2 of 7 — and the rest as numbered
 one-line briefs in a four-column index.  The date check names the
 off-date mega-stories the page deliberately excludes.
 """
@@ -26,25 +28,26 @@ PAGE = 1024
 CONTENT = 992
 RIGHT = MARGIN + CONTENT
 
-KICKER_H = 24
-DATE_H = 90
-STRIP_H = 48
-HERO_H = 300
-CARDS_H = 260
-INDEX_H = 240
-CHECK_H = 42
-FOOTER_H = 20
+KICKER_H = 20
+DATE_H = 88
+STRIP_H = 42
+HERO_H = 292
+CARDS_H = 252
+MAP_H = 74
+INDEX_H = 216
+CHECK_H = 26
+FOOTER_H = 14
 
 HERO_SCENE_H = 190
 HERO1_W = 655
 HERO_GAP = 10
 HERO2_W = CONTENT - HERO1_W - HERO_GAP
 
-CARD_SCENE_H = 72
-CARD_ROW_H = 130
+CARD_SCENE_H = 68
+CARD_ROW_H = 126
 CARD_GUTTER = 3
 ROW1_WIDTHS = [395, 196, 196, 196]
-ROW2_WIDTHS = [163, 163, 163, 163, 163, 162]
+ROW2_WIDTHS = [139, 139, 139, 139, 139, 139, 140]
 
 REGION_ORDER = ["Asia", "Middle East", "Europe", "Americas", "Africa",
                 "Oceania", "Global"]
@@ -53,21 +56,19 @@ STRIP = [
     ("6.7", "PERU QUAKE MAGNITUDE"),
     ("$58,983", "BITCOIN −3.9% · 02:08 UTC"),
     ("124*", "RAHUL · WELLINGTON"),
-    ("7/58", "STARC · PERTH"),
+    ("114", "BRAZIL STORM GUSTS"),
     ("146", "SAFE · DAVAO LANDING"),
     ("144→80", "COP31 DRAFT CUT"),
 ]
 
 CHECK_LEAD = "DATE CHECK — NOT TODAY: "
+# One line, abbreviated but naming all seven exclusions.
 CHECK_L1 = (
-    "Wall Street correction (20 Nov) · Poland missile "
-    "(overnight 20→21 Nov) · UK–EU deal (20 Nov) · Akvan "
-    "landfall (20 Nov)"
+    "Wall Street (20 Nov) · Poland missile (20→21 Nov) · "
+    "UK–EU deal (20) · Akvan (20) · BepiColombo (20) · "
+    "ICJ ruling (19) · GTA VI (19)"
 )
-CHECK_L2 = (
-    "BepiColombo at Mercury (20 Nov) · ICJ Myanmar ruling "
-    "(19 Nov) · GTA VI launch (19 Nov)"
-)
+CHECK_L2 = ""
 
 
 def region_counts(stories):
@@ -123,7 +124,7 @@ def _strip(draw, y):
         if i:
             draw.line([cx - 1, y + 5, cx - 1, y + 41], fill=C.HAIRLINE)
         draw.text((cx + 4, y + 3), figure, font=fig_face, fill=C.ACCENT)
-        draw.text((cx + 4, y + 32), label, font=lab_face, fill=C.FAINT)
+        draw.text((cx + 4, y + 30), label, font=lab_face, fill=C.FAINT)
     draw.line([MARGIN, y + STRIP_H - 1, RIGHT, y + STRIP_H - 1],
               fill=C.HAIRLINE)
 
@@ -149,8 +150,11 @@ def _hero_text(draw, story, x, w, y_top, counts=None):
     head = get_font(C.SERIF_BOLD, 19)
     dek = get_font(C.SANS, 13)
     ty = y_top
-    draw.text((x, ty), "%s · %s" % (story["place"],
-              story["kicker_date"]), font=kick, fill=C.ACCENT)
+    # Per-story source tag on the kicker line (first cited source).
+    src = (story.get("sources") or [""])[0]
+    draw.text((x, ty), "%s · %s · %s" % (story["place"],
+              story["kicker_date"], src.upper()), font=kick,
+              fill=C.ACCENT)
     ty += 14
     for line in wrap_lines(draw, story["headline"], head, w):
         draw.text((x, ty), line, font=head, fill=C.INK)
@@ -193,8 +197,10 @@ def _card(draw, img, story, x, y, w):
     art.paint_scene(img, draw, box, story)
     ty = y + CARD_SCENE_H + 3
     box_w = _num_box(draw, x, ty, story["num"])
-    kicker = "%s · %s" % (story["place"], story["kicker_date"])
-    ksize = fit_size(draw, kicker, C.SANS_BOLD, 9, 7,
+    src = (story.get("sources") or [""])[0]
+    kicker = "%s · %s · %s" % (story["place"], story["kicker_date"],
+                               src.upper())
+    ksize = fit_size(draw, kicker, C.SANS_BOLD, 9, 6,
                      w - box_w - 3)
     draw.text((x + box_w + 3, ty), kicker,
               font=get_font(C.SANS_BOLD, ksize), fill=C.ACCENT)
@@ -220,18 +226,29 @@ def _cards(draw, img, cards, y):
         cx += w + CARD_GUTTER
 
 
-def _index(draw, briefs, y):
+def _map(draw, y):
+    """WHERE IT HAPPENED band: title + original dotted-continent
+    map with pins numbered to match the illustrated story numbers."""
+    head = get_font(C.SANS_BOLD, 11)
+    draw.text((MARGIN, y + 2), "WHERE IT HAPPENED — %d ILLUSTRATED "
+              "STORIES, PINNED" % len(art.MAP_PINS),
+              font=head, fill=C.INK)
+    draw.line([MARGIN, y + 16, RIGHT, y + 16], fill=C.HAIRLINE)
+    art.paint_map(draw, (MARGIN, y + 18, CONTENT, MAP_H - 20))
+
+
+def _index(draw, briefs, y, stats):
     head = get_font(C.SANS_BOLD, 12)
     draw.text((MARGIN, y + 4), "MORE OF THE DAY — %d STORIES"
               % len(briefs), font=head, fill=C.INK)
-    note = "12 ILLUSTRATED ABOVE"
+    note = "%d ILLUSTRATED ABOVE" % stats["illustrated"]
     note_face = get_font(C.SANS, 10)
     draw.text((RIGHT - text_w(draw, note, note_face), y + 5), note,
               font=note_face, fill=C.FAINT)
     draw.line([MARGIN, y + 18, RIGHT, y + 18], fill=C.INK)
     brief_face = get_font(C.SANS_BOLD, 12)
     col_w = CONTENT // 4
-    row_h = 31
+    row_h = 28
     for idx, story in enumerate(briefs):
         col, row = divmod(idx, 7)
         cx = MARGIN + col * col_w
@@ -252,10 +269,9 @@ def _date_check(draw, y):
     body = get_font(C.SANS, 9)
     tx = MARGIN + 6
     lead_w = text_w(draw, CHECK_LEAD.rstrip(), lead)
-    draw.text((tx, y + 7), CHECK_LEAD, font=lead, fill=C.INK)
-    draw.text((tx + int(lead_w) + 4, y + 7), CHECK_L1, font=body,
+    draw.text((tx, y + 8), CHECK_LEAD, font=lead, fill=C.INK)
+    draw.text((tx + int(lead_w) + 4, y + 8), CHECK_L1, font=body,
               fill=C.INK)
-    draw.text((tx, y + 19), CHECK_L2, font=body, fill=C.INK)
 
 
 def _footer(draw, data, y):
@@ -265,7 +281,7 @@ def _footer(draw, data, y):
             if src not in seen:
                 seen.append(src)
     text = "SOURCES: " + " · ".join(seen) + " · Drawn in code"
-    draw.text((MARGIN, y + 4), text, font=get_font(C.SANS, 7),
+    draw.text((MARGIN, y + 3), text, font=get_font(C.SANS, 7),
               fill=C.FAINT)
 
 
@@ -290,7 +306,9 @@ def build_page(data):
     y += HERO_H
     _cards(draw, img, cards, y)
     y += CARDS_H
-    _index(draw, briefs, y)
+    _map(draw, y)
+    y += MAP_H
+    _index(draw, briefs, y, stats)
     y += INDEX_H
     _date_check(draw, y)
     y += CHECK_H
