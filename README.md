@@ -8,13 +8,14 @@ One image that sums up the world news of Saturday 21 November 2026: a
 date-as-masthead front page with one dominant hero (COP31 running into
 overtime), a second hero (five Houthi missiles downed over Riyadh and
 Jizan), a figure strip of the day's key numbers — each figure appearing
-exactly once in the story text — ten more stories as drawn scene-cards
-(led by the Peru quake, its seismograph trace drawn heavy enough to
-read at 480 px), and the rest of the day as one-line briefs. 40 stories,
-every illustrated story pure 21-November news; a DATE CHECK panel lists
-the 19–20 November items that were deliberately excluded, and the
-validator fails the build if any excluded story is printed anywhere on
-the page.
+exactly once in the story text — nine more stories as drawn scene-cards
+(led by BepiColombo's arrival at Mercury and the Peru quake, its
+seismograph trace drawn heavy enough to read at 480 px), a pinned
+world map of the illustrated stories, and the rest of the day as
+one-line briefs. 41 stories, every illustrated story pure 21-November
+news; a DATE CHECK panel lists the 19–20 November items that were
+deliberately excluded, and the validator fails the build if any
+excluded story is printed anywhere on the page.
 
 The picture is drawn by a deterministic engine (`engine/`, Pillow): a
 validated content file goes in, a byte-identical 1024×1024 PNG comes
@@ -33,4 +34,5 @@ mkdir -p out && MAKEFUN_OUTPUT_DIR=out python3 main.py
 ## Sources
 
 Reuters · Al Jazeera · Dawn · AFP · Dunya News · USGS/IGP · AP · CAAP ·
-RTL · The Economic Times · CoinGecko (Bitcoin 02:08 UTC).
+RTL · The Economic Times · CoinGecko (Bitcoin 02:08 UTC) · ESA
+(BepiColombo Mercury orbit insertion, 21 November 2026) · Bloomberg.

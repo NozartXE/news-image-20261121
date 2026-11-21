@@ -21,11 +21,11 @@ from . import colours as C
 from .page import HERO_SCENE_H, compute_stats
 from .words import get_font, wrap_lines
 
-WANT_STORIES = 40
-WANT_ILLUSTRATED = 13
+WANT_STORIES = 41
+WANT_ILLUSTRATED = 11
 WANT_HEROES = 2
-WANT_CARDS = 11
-WANT_INDEX = 27
+WANT_CARDS = 9
+WANT_INDEX = 30
 WANT_REGIONS = 7
 INDEX_TEXT_W = 210
 NARROW_HERO_W = 327
@@ -39,10 +39,12 @@ SINGLE_FIGURES = [
 
 # Names belonging to the excluded off-date items; none may appear in
 # any printed story text.  "Poland missile" is the full phrase so the
-# Warsaw Cup brief (which names Poland) still passes.
+# Warsaw Cup brief (which names Poland) still passes.  "BepiColombo"
+# left this list in round 2 — it is a genuine 21-Nov story now
+# (ESA: Mercury orbit insertion 21 November 2026) and prints as one.
 CHECK_EXCLUDED = [
     "Wall Street", "Poland missile", "UK–EU", "Akvan", "ICJ",
-    "GTA VI", "BepiColombo", "Riemann", "Shenzhen", "Crimea",
+    "GTA VI", "Riemann", "Shenzhen", "Crimea",
 ]
 
 # Figures that must never print at all (off-date or unverified).
@@ -134,7 +136,8 @@ def validate(data):
     draw = ImageDraw.Draw(probe)
 
     # date check lines must fit their band (lead + line 1, line 2)
-    from .page import CHECK_L1, CHECK_L2, CHECK_LEAD, CONTENT, HERO_H
+    from .page import (CHECK_L1, CHECK_L2, CHECK_LEAD, CONTENT,
+                       HERO_H, INDEX_H)
     from .words import text_w
     lead_face = get_font(C.SANS_BOLD, 9)
     body_face = get_font(C.SANS, 9)
@@ -144,7 +147,10 @@ def validate(data):
     if text_w(draw, CHECK_L2, body_face) > CONTENT - 12:
         failures.append("DATE CHECK line 2 too wide")
 
-    # legibility: measured wraps at printed widths
+    # legibility: measured wraps at printed widths; the index
+    # grid geometry comes from page.py so the gate measures the
+    # real grid (rows per column, row pitch, two-line briefs)
+    from .page import INDEX_ROWS, INDEX_ROW_H
     brief_face = get_font(C.SANS_BOLD, 12)
     for story in stories:
         if story.get("tier") != "index":
@@ -153,6 +159,14 @@ def validate(data):
                            INDEX_TEXT_W)
         if len(lines) > 2:
             failures.append("brief %d wraps past 2 lines" % story["num"])
+    briefs = [s for s in stories if s["tier"] == "index"]
+    if briefs:
+        deepest = max(
+            (i // INDEX_ROWS) * INDEX_ROW_H + 14 * 2
+            for i in range(len(briefs)))
+        if deepest > INDEX_H - 22:
+            failures.append("index grid bottom %d px past the band"
+                            % deepest)
     head_face = get_font(C.SANS_BOLD, 13)
     from .page import CARD_SCENE_H, ROW1_WIDTHS, ROW2_WIDTHS
     from .words import fit_size, text_w

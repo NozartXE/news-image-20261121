@@ -587,55 +587,103 @@ def paint_tankers(img, draw, box, story):
              180, 360, fill=(24, 22, 20), width=2)
 
 
-def paint_summit(img, draw, box, story):
-    """New Delhi: three flags on poles behind a round summit
-    table, three seated delegates — the trilateral, drawn."""
+def paint_forum(img, draw, box, story):
+    """New Delhi: the SCO forum's colonnaded hall — rows of member
+    flags on the lawn, delegates arriving at the steps, a banner
+    over the door.  The story is the visit, not a summit table."""
     x, y, w, h = box
-    draw.rectangle([x, y, x + w, y + h], fill=(214, 206, 190))
-    # three flags: India, United States, China (simplified)
-    flags = [
-        ((240, 140, 40), (240, 240, 230), (52, 116, 56)),
-        ((178, 40, 40), (240, 240, 230), (178, 40, 40)),
-        ((200, 40, 40), (240, 200, 60), None),
-    ]
-    for i, stripes in enumerate(flags):
-        fx = x + w * (0.14 + 0.34 * i)
-        draw.rectangle([fx, y + h * 0.06, fx + 2, y + h * 0.46],
-                       fill=(60, 56, 50))
-        for k, col in enumerate(stripes):
-            if col is None:
-                continue
-            draw.rectangle([fx + 2, y + h * (0.06 + 0.08 * k),
-                            fx + w * 0.20, y + h * (0.14 + 0.08 * k)],
-                           fill=col)
-        if i == 1:
-            # US canton: blue field with white stars over the stripes
-            draw.rectangle([fx + 2, y + h * 0.06, fx + w * 0.09,
-                            y + h * 0.15], fill=(30, 60, 140))
-            for sx, sy in ((0.03, 0.08), (0.05, 0.11), (0.07, 0.08)):
-                draw.ellipse([fx + w * sx, y + h * sy,
-                              fx + w * sx + 2, y + h * sy + 2],
-                             fill=(240, 240, 230))
-        if i == 2:
-            draw.ellipse([fx + 5, y + h * 0.08, fx + 9, y + h * 0.12],
-                         fill=(240, 200, 60))
-    # three seated delegates behind the table
+    draw.rectangle([x, y, x + w, y + h], fill=(226, 216, 196))
+    # the hall: roof band, columns, door
+    draw.rectangle([x + w * 0.30, y + h * 0.10, x + w * 0.94,
+                    y + h * 0.66], fill=(214, 206, 190))
+    draw.rectangle([x + w * 0.30, y + h * 0.06, x + w * 0.94,
+                    y + h * 0.14], fill=(150, 60, 50))
     for i in range(3):
-        hx = x + w * (0.20 + 0.30 * i)
-        _head(draw, hx, y + h * 0.52, h * 0.09,
-              (30, 28, 26) if i % 2 else (200, 200, 200))
-        draw.rectangle([hx - h * 0.14, y + h * 0.60, hx + h * 0.14,
-                        y + h * 0.72],
-                       fill=((52, 58, 74), (84, 60, 52),
-                             (44, 66, 58))[i])
-    # round table with papers
-    draw.ellipse([x + w * 0.08, y + h * 0.70, x + w * 0.92,
-                  y + h * 0.92], fill=(96, 72, 46))
-    draw.ellipse([x + w * 0.08, y + h * 0.70, x + w * 0.92,
-                  y + h * 0.80], fill=(140, 104, 62))
-    for px in (0.22, 0.46, 0.70):
-        draw.rectangle([x + w * px, y + h * 0.72, x + w * (px + 0.08),
-                        y + h * 0.78], fill=(255, 255, 250))
+        cx = x + w * (0.38 + 0.20 * i)
+        draw.rectangle([cx, y + h * 0.14, cx + w * 0.05,
+                        y + h * 0.66], fill=(240, 232, 214))
+    draw.rectangle([x + w * 0.55, y + h * 0.34, x + w * 0.69,
+                    y + h * 0.66], fill=(52, 44, 36))
+    # banner over the door
+    draw.rectangle([x + w * 0.40, y + h * 0.18, x + w * 0.84,
+                    y + h * 0.28], fill=(30, 90, 160))
+    draw.text((x + w * 0.47, y + h * 0.195), "SCO FORUM",
+              font=get_font(C.SANS_BOLD, 8), fill=(240, 240, 230))
+    # steps
+    draw.rectangle([x + w * 0.30, y + h * 0.66, x + w * 0.94,
+                    y + h * 0.70], fill=(186, 178, 164))
+    draw.rectangle([x + w * 0.30, y + h * 0.70, x + w * 0.94,
+                    y + h * 0.74], fill=(200, 192, 178))
+    # a row of member flags on poles along the left lawn
+    flag_cols = [(52, 116, 56), (200, 40, 40), (30, 90, 160),
+                 (240, 200, 60), (240, 140, 40)]
+    for i, col in enumerate(flag_cols):
+        fx = x + w * (0.04 + 0.055 * i)
+        draw.rectangle([fx, y + h * 0.10, fx + 2, y + h * 0.62],
+                       fill=(60, 56, 50))
+        draw.rectangle([fx + 2, y + h * 0.10, fx + w * 0.045,
+                        y + h * 0.20], fill=col)
+    # delegates arriving at the steps
+    _person(draw, x + w * 0.50, y + h * 0.94, h * 0.30,
+            (34, 38, 60), (30, 28, 26))
+    _person(draw, x + w * 0.76, y + h * 0.94, h * 0.30,
+            (84, 60, 52), (60, 44, 30))
+    draw.rectangle([x + w * 0.80, y + h * 0.84, x + w * 0.87,
+                    y + h * 0.94], fill=(96, 72, 46))
+
+
+def paint_orbit(img, draw, box, story):
+    """Mercury: the cratered planet fills the frame, the stacked
+    BepiColombo craft crosses it firing its thrusters — a first
+    orbit after an eight-year voyage.  Drawn wide: this painter
+    carries the 395 px lead card."""
+    x, y, w, h = box
+    draw.rectangle([x, y, x + w, y + h], fill=(10, 12, 22))
+    # stars
+    for sx, sy in ((0.05, 0.10), (0.16, 0.22), (0.30, 0.06),
+                   (0.44, 0.16), (0.58, 0.08), (0.72, 0.20),
+                   (0.84, 0.10), (0.94, 0.24), (0.24, 0.30),
+                   (0.66, 0.30)):
+        draw.rectangle([x + w * sx, y + h * sy, x + w * sx + 2,
+                        y + h * sy + 2], fill=(220, 224, 240))
+    # mercury: a big cratered disc, terminator shading on the right
+    mx, my, mr = x + w * 0.22, y + h * 0.66, h * 0.44
+    draw.ellipse([mx - mr, my - mr, mx + mr, my + mr],
+                 fill=(168, 158, 146))
+    draw.pieslice([mx - mr, my - mr, mx + mr, my + mr], -70, 70,
+                  fill=(104, 96, 88))
+    for cx, cy, cr in ((0.16, 0.52, 0.09), (0.30, 0.76, 0.06),
+                       (0.08, 0.82, 0.05), (0.34, 0.46, 0.045),
+                       (0.22, 0.62, 0.035)):
+        ex, ey = x + w * cx, y + h * cy
+        er = h * cr
+        draw.ellipse([ex - er, ey - er, ex + er, ey + er],
+                     outline=(120, 110, 98), width=2)
+    # the craft: stacked orbiters, solar wing, dish, thruster plume
+    cx0, cy0 = x + w * 0.56, y + h * 0.34
+    draw.rectangle([cx0, cy0, cx0 + w * 0.10, cy0 + h * 0.16],
+                   fill=(226, 226, 220))
+    draw.rectangle([cx0 + w * 0.015, cy0 + h * 0.16,
+                    cx0 + w * 0.085, cy0 + h * 0.26],
+                   fill=(198, 198, 192))
+    draw.rectangle([cx0 - w * 0.11, cy0 + h * 0.03,
+                    cx0, cy0 + h * 0.13], fill=(44, 92, 168))
+    draw.line([cx0 - w * 0.11, cy0 + h * 0.08, cx0, cy0 + h * 0.08],
+              fill=(150, 180, 220), width=2)
+    draw.ellipse([cx0 + w * 0.10, cy0 + h * 0.01,
+                  cx0 + w * 0.16, cy0 + h * 0.15],
+                 outline=(226, 226, 220), width=2)
+    draw.polygon([(cx0 + w * 0.03, cy0 + h * 0.26),
+                  (cx0 + w * 0.07, cy0 + h * 0.26),
+                  (cx0 + w * 0.05, cy0 + h * 0.44)],
+                 fill=(255, 190, 90))
+    draw.polygon([(cx0 + w * 0.04, cy0 + h * 0.26),
+                  (cx0 + w * 0.06, cy0 + h * 0.26),
+                  (cx0 + w * 0.05, cy0 + h * 0.36)],
+                 fill=(255, 240, 200))
+    # the capture arc sweeping toward the planet
+    draw.arc([x + w * 0.22, y + h * 0.02, x + w * 0.96,
+              y + h * 0.80], 300, 60, fill=(244, 196, 84), width=2)
 
 
 def paint_arson(img, draw, box, story):
@@ -693,31 +741,37 @@ MAP_LAND = [
 ]
 
 # (story number, map-local x, map-local y) — pins for every
-# illustrated story; positions spread so no two pins collide,
-# including the Europe / Middle East cluster.
+# illustrated story; positions spread so no two pins collide even
+# at the enlarged 480-px-proof size, including the Europe /
+# Middle East cluster.  Story 14 (BepiColombo) is in space — its
+# pin sits off the top edge of the map, as the class leaders do.
 MAP_PINS = [
     (1, 0.565, 0.30),   # Antalya
     (2, 0.595, 0.46),   # Riyadh
     (3, 0.235, 0.62),   # Carhuamayo, Peru
-    (4, 0.470, 0.22),   # Europe (Gen Z)
-    (5, 0.795, 0.52),   # Davao
+    (4, 0.455, 0.22),   # Europe (Gen Z)
+    (5, 0.800, 0.52),   # Davao
     (6, 0.685, 0.38),   # New Delhi
     (7, 0.905, 0.82),   # Wellington
     (8, 0.260, 0.75),   # Tupanciretã, Brazil
-    (9, 0.505, 0.10),   # Copenhagen
-    (10, 0.495, 0.52),  # Nigeria
-    (11, 0.155, 0.45),  # Texas
-    (12, 0.635, 0.34),  # Kharg Island
-    (13, 0.720, 0.40),  # Dhaka
+    (9, 0.500, 0.10),   # Copenhagen
+    (12, 0.640, 0.33),  # Kharg Island
+    (14, 0.470, 0.035),  # Mercury — in space, above the map
 ]
 
 
 def paint_map(draw, box):
-    """Original dotted-continent map: land as a dot grid inside
-    the stylised continent ellipses, numbered pins on top."""
+    """Original dotted-continent map: land as a dense dot grid
+    inside the stylised continent ellipses, numbered pins on top.
+
+    Legibility is judged at the 480 px render, not at 1024: the
+    dots are dark and large, and each pin is a 24 px disc with a
+    2 px white halo and a 13 pt number, so a pin still reads as a
+    numbered marker after the 0.469 downscale instead of
+    collapsing into an anonymous dot."""
     x, y, w, h = box
-    dot = (110, 108, 98)
-    step = 5
+    dot = (88, 84, 74)
+    step = 4
     for cx, cy, rx, ry in MAP_LAND:
         x0 = int(x + w * (cx - rx))
         x1 = int(x + w * (cx + rx))
@@ -730,12 +784,14 @@ def paint_map(draw, box):
                 if nx * nx + ny * ny <= 1.0:
                     draw.ellipse([gx - 2, gy - 2, gx + 2, gy + 2],
                                  fill=dot)
-    face = get_font(C.SANS_BOLD, 8)
+    face = get_font(C.SANS_BOLD, 13)
     for num, fx, fy in MAP_PINS:
         px, py = x + w * fx, y + h * fy
-        r = 8
+        r = 12
+        draw.ellipse([px - r - 2, py - r - 2, px + r + 2,
+                      py + r + 2], fill=(255, 255, 255))
         draw.ellipse([px - r, py - r, px + r, py + r],
-                     fill=C.ACCENT, outline=(255, 255, 255), width=1)
+                     fill=C.ACCENT)
         label = str(num)
         bb = draw.textbbox((0, 0), label, font=face)
         draw.text((px - (bb[2] + bb[0]) / 2, py - (bb[3] + bb[1]) / 2
@@ -754,7 +810,8 @@ PAINTERS = {
     "capsize": paint_capsize,
     "cell": paint_cell,
     "tankers": paint_tankers,
-    "summit": paint_summit,
+    "forum": paint_forum,
+    "orbit": paint_orbit,
     "arson": paint_arson,
 }
 
@@ -770,7 +827,8 @@ LABELS = {
     "capsize": ("4 DEAD", "left"),
     "cell": ("63 MIN", "right"),
     "tankers": ("KHARG", "left"),
-    "summit": ("SUMMIT", "right"),
+    "forum": ("SCO FORUM", "right"),
+    "orbit": ("19:24 CET", "right"),
     "arson": ("ARSON", "left"),
 }
 

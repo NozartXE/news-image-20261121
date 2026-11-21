@@ -9,10 +9,10 @@ The page is a stack of horizontal bands whose heights sum to the
 The map band is funded by trimming band heights (index rows,
 DATE CHECK to one line, hero/cards/kicker/strip/footer trims) —
 never by dropping stories.  Stories are placed by tier: two heroes
-(a wide lead and a narrower second), eleven cards in two rows —
-row 1 of 4 (lead card widest), row 2 of 7 — and the rest as numbered
-one-line briefs in a four-column index.  The date check names the
-off-date mega-stories the page deliberately excludes.
+(a wide lead and a narrower second), nine cards in two rows —
+row 1 of 4 (the lead card widest), row 2 of 5 — and the rest as
+numbered one-line briefs in a four-column index.  The date check
+names the off-date mega-stories the page deliberately excludes.
 """
 
 import json
@@ -38,6 +38,10 @@ INDEX_H = 216
 CHECK_H = 26
 FOOTER_H = 14
 
+# Index grid: four columns; a column holds eight briefs.
+INDEX_ROWS = 8
+INDEX_ROW_H = 26
+
 HERO_SCENE_H = 190
 HERO1_W = 655
 HERO_GAP = 10
@@ -47,7 +51,7 @@ CARD_SCENE_H = 68
 CARD_ROW_H = 126
 CARD_GUTTER = 3
 ROW1_WIDTHS = [395, 196, 196, 196]
-ROW2_WIDTHS = [139, 139, 139, 139, 139, 139, 140]
+ROW2_WIDTHS = [196, 196, 196, 196, 195]
 
 REGION_ORDER = ["Asia", "Middle East", "Europe", "Americas", "Africa",
                 "Oceania", "Global"]
@@ -62,10 +66,13 @@ STRIP = [
 ]
 
 CHECK_LEAD = "DATE CHECK — NOT TODAY: "
-# One line, abbreviated but naming all seven exclusions.
+# One line, abbreviated but naming all seven exclusions.  BepiColombo
+# left this list in round 2: ESA + Wikipedia date the Mercury orbit
+# insertion to 21 Nov 2026, so it is a story on this page, not an
+# exclusion.  The Shenzhen summit (Thu 19 Nov) takes its place.
 CHECK_L1 = (
     "Wall Street (20 Nov) · Poland missile (20→21 Nov) · "
-    "UK–EU deal (20) · Akvan (20) · BepiColombo (20) · "
+    "UK–EU deal (20) · Akvan (20) · Shenzhen summit (19) · "
     "ICJ ruling (19) · GTA VI (19)"
 )
 CHECK_L2 = ""
@@ -246,13 +253,14 @@ def _index(draw, briefs, y, stats):
     draw.text((RIGHT - text_w(draw, note, note_face), y + 5), note,
               font=note_face, fill=C.FAINT)
     draw.line([MARGIN, y + 18, RIGHT, y + 18], fill=C.INK)
+    # Four columns of eight rows (30 briefs); rows are INDEX_ROW_H
+    # apart so eight rows fit exactly inside the band.
     brief_face = get_font(C.SANS_BOLD, 12)
     col_w = CONTENT // 4
-    row_h = 28
     for idx, story in enumerate(briefs):
-        col, row = divmod(idx, 7)
+        col, row = divmod(idx, INDEX_ROWS)
         cx = MARGIN + col * col_w
-        cy = y + 22 + row * row_h
+        cy = y + 22 + row * INDEX_ROW_H
         draw.rectangle([cx, cy, cx + 26, cy + 13], fill=C.INK)
         draw.text((cx + 3, cy + 1), "%d." % story["num"],
                   font=brief_face, fill=C.PAPER)
