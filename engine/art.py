@@ -741,10 +741,12 @@ MAP_LAND = [
 ]
 
 # (story number, map-local x, map-local y) — pins for every
-# illustrated story; positions spread so no two pins collide even
-# at the enlarged 480-px-proof size, including the Europe /
-# Middle East cluster.  Story 14 (BepiColombo) is in space — its
-# pin sits off the top edge of the map, as the class leaders do.
+# illustrated story with a place on Earth; positions spread so
+# no two pins collide even at the enlarged 480-px-proof size,
+# including the Europe / Middle East cluster.  The orbit story
+# (BepiColombo at Mercury) has no pin: a pin at the map's edge
+# reads as planted on Earth, so the map's title line annotates
+# it as in space instead (see page.space_note).
 MAP_PINS = [
     (1, 0.565, 0.30),   # Antalya
     (2, 0.595, 0.46),   # Riyadh
@@ -755,8 +757,7 @@ MAP_PINS = [
     (7, 0.905, 0.82),   # Wellington
     (8, 0.260, 0.75),   # Tupanciretã, Brazil
     (9, 0.500, 0.10),   # Copenhagen
-    (12, 0.640, 0.33),  # Kharg Island
-    (14, 0.470, 0.035),  # Mercury — in space, above the map
+    (10, 0.640, 0.33),  # Kharg Island
 ]
 
 

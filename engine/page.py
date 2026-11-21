@@ -38,9 +38,15 @@ INDEX_H = 216
 CHECK_H = 26
 FOOTER_H = 14
 
-# Index grid: four columns; a column holds eight briefs.
+# Index grid: four columns; a column holds eight briefs.  The
+# grid starts INDEX_TOP px into the band and rows are INDEX_ROW_H
+# apart; a brief's lines advance INDEX_LEAD px each.  The deepest
+# brief (row 7, one line) bottoms at 20 + 7*25 + 14 = 209 px,
+# inside the 216 px band — the gate measures this per brief.
 INDEX_ROWS = 8
-INDEX_ROW_H = 26
+INDEX_ROW_H = 25
+INDEX_TOP = 20
+INDEX_LEAD = 14
 
 HERO_SCENE_H = 190
 HERO1_W = 655
@@ -76,6 +82,18 @@ CHECK_L1 = (
     "ICJ ruling (19) · GTA VI (19)"
 )
 CHECK_L2 = ""
+
+
+def space_note(data):
+    """Title-line note for the illustrated story that has no map
+    pin because it did not happen on Earth (the orbit story).
+    Both the number and the place are derived from the content
+    data, never hardcoded."""
+    for story in data["stories"]:
+        if story.get("scene") == "orbit":
+            return "NO. %d IS IN SPACE: %s" % (
+                story["num"], story["place"])
+    return ""
 
 
 def region_counts(stories):
@@ -233,13 +251,19 @@ def _cards(draw, img, cards, y):
         cx += w + CARD_GUTTER
 
 
-def _map(draw, y):
+def _map(draw, y, note=""):
     """WHERE IT HAPPENED band: title + original dotted-continent
-    map with pins numbered to match the illustrated story numbers."""
+    map with pins numbered to match the illustrated story numbers.
+    The orbit story has no pin; ``note`` (from space_note, derived
+    from the data) annotates it on the title line instead."""
     head = get_font(C.SANS_BOLD, 11)
     draw.text((MARGIN, y + 2), "WHERE IT HAPPENED — %d ILLUSTRATED "
               "STORIES, PINNED" % len(art.MAP_PINS),
               font=head, fill=C.INK)
+    if note:
+        note_face = get_font(C.SANS, 10)
+        draw.text((RIGHT - text_w(draw, note, note_face), y + 3),
+                  note, font=note_face, fill=C.FAINT)
     draw.line([MARGIN, y + 16, RIGHT, y + 16], fill=C.HAIRLINE)
     art.paint_map(draw, (MARGIN, y + 18, CONTENT, MAP_H - 20))
 
@@ -254,20 +278,21 @@ def _index(draw, briefs, y, stats):
               font=note_face, fill=C.FAINT)
     draw.line([MARGIN, y + 18, RIGHT, y + 18], fill=C.INK)
     # Four columns of eight rows (30 briefs); rows are INDEX_ROW_H
-    # apart so eight rows fit exactly inside the band.
+    # apart starting INDEX_TOP px into the band, so the deepest
+    # brief bottoms inside the band (see the constants above).
     brief_face = get_font(C.SANS_BOLD, 12)
     col_w = CONTENT // 4
     for idx, story in enumerate(briefs):
         col, row = divmod(idx, INDEX_ROWS)
         cx = MARGIN + col * col_w
-        cy = y + 22 + row * INDEX_ROW_H
+        cy = y + INDEX_TOP + row * INDEX_ROW_H
         draw.rectangle([cx, cy, cx + 26, cy + 13], fill=C.INK)
         draw.text((cx + 3, cy + 1), "%d." % story["num"],
                   font=brief_face, fill=C.PAPER)
         ly = cy
         for line in wrap_lines(draw, story["brief"], brief_face, 210)[:2]:
             draw.text((cx + 30, ly), line, font=brief_face, fill=C.INK)
-            ly += 14
+            ly += INDEX_LEAD
 
 
 def _date_check(draw, y):
@@ -314,7 +339,7 @@ def build_page(data):
     y += HERO_H
     _cards(draw, img, cards, y)
     y += CARDS_H
-    _map(draw, y)
+    _map(draw, y, space_note(data))
     y += MAP_H
     _index(draw, briefs, y, stats)
     y += INDEX_H

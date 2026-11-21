@@ -152,7 +152,7 @@
    "brief": "Boat of mourners capsizes in Nigeria; 4+ dead",
    "id": "A7",
    "kicker_date": "21 NOV",
-   "num": 10,
+   "num": 12,
    "place": "NIGERIA",
    "region": "Africa",
    "source_section": "A",
@@ -162,7 +162,7 @@
    "brief": "Texas execution takes 63 minutes; prisoner moans",
    "id": "A9",
    "kicker_date": "21 NOV",
-   "num": 11,
+   "num": 13,
    "place": "TEXAS",
    "region": "Americas",
    "source_section": "A",
@@ -173,7 +173,7 @@
    "headline": "Tankers mass at Kharg Island",
    "id": "A14",
    "kicker_date": "21 NOV",
-   "num": 12,
+   "num": 10,
    "place": "KHARG ISLAND",
    "region": "Middle East",
    "scene": "tankers",
@@ -188,7 +188,7 @@
    "brief": "Bangladesh hit by fresh arson attacks",
    "id": "A40",
    "kicker_date": "21 NOV",
-   "num": 13,
+   "num": 14,
    "place": "DHAKA",
    "region": "Asia",
    "source_section": "A",
@@ -235,7 +235,7 @@
    "tier": "index"
   },
   {
-   "brief": "Congress split over shutdown as Iran war divides",
+   "brief": "Congress split over shutdown",
    "id": "A13",
    "kicker_date": "21 NOV",
    "num": 19,
@@ -315,7 +315,7 @@
    "tier": "index"
   },
   {
-   "brief": "US declassifies more UFO footage from Middle East",
+   "brief": "US declassifies UFO footage",
    "id": "A22",
    "kicker_date": "21 NOV",
    "num": 27,
@@ -395,7 +395,7 @@
    "tier": "index"
   },
   {
-   "brief": "Poland bars Russian skaters from Warsaw Cup",
+   "brief": "Poland bars Russian skaters",
    "id": "A30",
    "kicker_date": "21 NOV",
    "num": 35,
@@ -470,7 +470,7 @@
    "id": "B8",
    "kicker_date": "21 NOV",
    "lead": true,
-   "num": 14,
+   "num": 11,
    "place": "MERCURY",
    "region": "Global",
    "scene": "orbit",

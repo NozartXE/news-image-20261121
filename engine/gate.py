@@ -93,13 +93,23 @@ def validate(data):
     if nums != list(range(1, len(stories) + 1)):
         failures.append("numbering is not 1..%d" % len(stories))
 
-    # map pins must be exactly the illustrated story numbers
+    # map pins must be exactly the illustrated story numbers,
+    # excluding the orbit-scene story (it has no place on Earth;
+    # the map annotates it as in space instead of pinning it)
     from . import art
+    from .page import space_note
     pins = [n for n, _, _ in art.MAP_PINS]
-    illustrated_nums = [s["num"] for s in stories if s.get("scene")]
+    illustrated_nums = [s["num"] for s in stories
+                        if s.get("scene") and s.get("scene") != "orbit"]
     if pins != illustrated_nums:
         failures.append("map pins %r != illustrated %r"
                         % (pins, illustrated_nums))
+    orbit = [s for s in stories if s.get("scene") == "orbit"]
+    if not orbit:
+        failures.append("no orbit-scene story for the space note")
+    elif "NO. %d " % orbit[0]["num"] not in space_note(data):
+        failures.append("space note %r does not name orbit story %d"
+                        % (space_note(data), orbit[0]["num"]))
 
     for story in stories:
         if story.get("scene"):
@@ -150,23 +160,25 @@ def validate(data):
     # legibility: measured wraps at printed widths; the index
     # grid geometry comes from page.py so the gate measures the
     # real grid (rows per column, row pitch, two-line briefs)
-    from .page import INDEX_ROWS, INDEX_ROW_H
+    from .page import INDEX_LEAD, INDEX_ROWS, INDEX_ROW_H, INDEX_TOP
     brief_face = get_font(C.SANS_BOLD, 12)
+    brief_lines = []
     for story in stories:
         if story.get("tier") != "index":
             continue
         lines = wrap_lines(draw, story["brief"], brief_face,
                            INDEX_TEXT_W)
+        brief_lines.append(len(lines))
         if len(lines) > 2:
             failures.append("brief %d wraps past 2 lines" % story["num"])
-    briefs = [s for s in stories if s["tier"] == "index"]
-    if briefs:
+    if brief_lines:
         deepest = max(
-            (i // INDEX_ROWS) * INDEX_ROW_H + 14 * 2
-            for i in range(len(briefs)))
-        if deepest > INDEX_H - 22:
-            failures.append("index grid bottom %d px past the band"
-                            % deepest)
+            INDEX_TOP + (i % INDEX_ROWS) * INDEX_ROW_H
+            + INDEX_LEAD * lines_i
+            for i, lines_i in enumerate(brief_lines))
+        if deepest > INDEX_H:
+            failures.append("index grid depth %d px exceeds band %d px"
+                            % (deepest, INDEX_H))
     head_face = get_font(C.SANS_BOLD, 13)
     from .page import CARD_SCENE_H, ROW1_WIDTHS, ROW2_WIDTHS
     from .words import fit_size, text_w
