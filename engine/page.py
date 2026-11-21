@@ -23,6 +23,7 @@ names the off-date mega-stories the page deliberately excludes.
 
 import json
 import os
+import re
 
 from PIL import Image, ImageDraw
 
@@ -348,11 +349,38 @@ def _date_check(draw, y):
 
 
 def _footer(draw, data, y):
+    # The footer is the page's pooled source list, so it must name
+    # every outlet the body actually cites — not only the pooled
+    # ``sources`` arrays.  Round 6b: the index briefs' parenthetical
+    # tags (Jabulani, RNZ, Izvestia, F1, CoinGecko, The Hindu, ...)
+    # and the DATE CHECK boxes' source tags (Daily Brief, Kyiv
+    # Independent, GOV.UK, IMD, ICJ, Rockstar, NASA) were cited in
+    # the body but omitted here.  All three sets are now derived,
+    # in first-appearance order; the briefs' "AJ" abbreviation is
+    # expanded to the Al Jazeera it stands for.  The complete
+    # 25-outlet line measures 861.1 px at the footer's existing
+    # 7 pt against the 992 px content width, so it fits this band
+    # at the size the band already used.
     seen = []
+
+    def add(name):
+        if name and name not in seen:
+            seen.append(name)
+
     for story in data["stories"]:
         for src in story.get("sources") or []:
-            if src not in seen:
-                seen.append(src)
+            add(src)
+    for story in data["stories"]:
+        brief = story.get("brief") or ""
+        match = re.search(r"\(([^)]+)\)\s*$", brief)
+        if match:
+            add("Al Jazeera" if match.group(1) == "AJ"
+                else match.group(1))
+    for line in (CHECK_L1, CHECK_L2):
+        # Tags sit inside the parentheses, after the date:
+        # "Poland missile (20 Nov · Reuters)".
+        for tag in re.findall(r"\(\d+ Nov · ([^)]+)\)", line):
+            add(tag)
     text = "SOURCES: " + " · ".join(seen) + " · Drawn in code"
     draw.text((MARGIN, y + 3), text, font=get_font(C.SANS, 7),
               fill=C.FAINT)

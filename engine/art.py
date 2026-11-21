@@ -870,8 +870,14 @@ def paint_map(draw, box):
                                  fill=dot)
     lab_face = get_font(C.SANS_BOLD, 7)
     for fx, fy, label in MAP_LABELS:
+        # Paper-coloured halo (the same device the pins use with
+        # their white discs): labels that sit over the dark dot
+        # field — NORTH AMERICA, ASIA — were dark-on-dark and
+        # barely readable; the halo separates every label from
+        # the dots without moving any label or pin.
         draw.text((x + w * fx, y + h * fy), label, font=lab_face,
-                  fill=(52, 48, 44))
+                  fill=(52, 48, 44), stroke_width=2,
+                  stroke_fill=C.PAPER)
     face = get_font(C.SANS_BOLD, 13)
     for num, fx, fy in MAP_PINS:
         px, py = x + w * fx, y + h * fy
