@@ -180,32 +180,43 @@
    "tier": "card"
   },
   {
-   "brief": "NIGERIA — Boat of mourners capsizes; 4+ dead (AJ)",
    "id": "A7",
    "kicker_date": "21 NOV",
    "num": 12,
    "place": "NIGERIA",
    "region": "Africa",
    "source_section": "A",
-   "tier": "index"
+   "tier": "card",
+   "headline": "Boat of mourners capsizes in Nigeria",
+   "dek": "At least four dead on way to a funeral",
+   "scene": "capsize",
+   "sources": [
+    "Al Jazeera"
+   ]
+  },
+  {
+   "id": "A40",
+   "kicker_date": "21 NOV",
+   "num": 13,
+   "place": "DHAKA",
+   "region": "Asia",
+   "source_section": "A",
+   "tier": "card",
+   "headline": "Fresh arson attacks hit Dhaka",
+   "dek": "Buildings torched amid political unrest",
+   "scene": "arson",
+   "sources": [
+    "Dawn",
+    "The Hindu"
+   ]
   },
   {
    "brief": "TEXAS — Prisoner moans in 63-minute execution (Dunya)",
    "id": "A9",
    "kicker_date": "21 NOV",
-   "num": 13,
+   "num": 14,
    "place": "TEXAS",
    "region": "Americas",
-   "source_section": "A",
-   "tier": "index"
-  },
-  {
-   "brief": "DHAKA — Fresh arson attacks amid unrest (Dawn)",
-   "id": "A40",
-   "kicker_date": "21 NOV",
-   "num": 14,
-   "place": "DHAKA",
-   "region": "Asia",
    "source_section": "A",
    "tier": "index"
   },

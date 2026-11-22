@@ -3,22 +3,31 @@
 The page is a stack of horizontal bands whose heights sum to the
 1024 px canvas::
 
-    kicker 20 + date 88 + figure strip 42 + hero row 252
-    + cards 252 + region row 21 + map 74 + index 223
-    + date check 39 + footer 13 = 1024
+    kicker 20 + date 86 + figure strip 42 + hero row 216
+    + cards 327 + region row 21 + map 66 + index 196
+    + date check 37 + footer 13 = 1024
 
 Round 6: the hero band gives up 33 px (scene 190 -> 160, both
 painters fractional) to fund a labelled full-width region row
 below the cards and a deeper index band, so every index brief can
 carry its place and source tag inside the gate's depth check.
 
-The map band is funded by trimming band heights (index rows,
-DATE CHECK to one line, hero/cards/kicker/strip/footer trims) —
-never by dropping stories.  Stories are placed by tier: two heroes
-(a wide lead and a narrower second), nine cards in two rows —
-row 1 of 4 (the lead card widest), row 2 of 5 — and the rest as
-numbered one-line briefs in a four-column index.  The date check
-names the off-date mega-stories the page deliberately excludes.
+Round 7: illustrated density rises 11 -> 13 (the paid-class
+standard) WITHOUT narrowing any card: two verified Section A
+index stories (Nigeria capsize, Dhaka arson) are promoted to
+cards and the card grid grows from two rows to three — row 1
+of 4 (the lead card widest, 196 px cards), row 2 of 3 (328 px
+cards, one-line headlines), row 3 of 4 (246 px cards).  The
+third row is funded by re-budgeting band heights, never by
+dropping stories: the hero band trims to 216 (scene 126; the
+narrow hero's text exactly fills it), the index band sheds a
+row (26 briefs over 7 rows instead of 28 over 8), the map band
+trims to 66, the masthead to 86 (its ink bottoms at 85) and the
+DATE CHECK box to 37.  Stories are placed by tier: two heroes
+(a wide lead and a narrower second), eleven cards in three
+rows, and the rest as numbered briefs in a four-column index.
+The date check names the off-date mega-stories the page
+deliberately excludes.
 """
 
 import json
@@ -36,36 +45,41 @@ CONTENT = 992
 RIGHT = MARGIN + CONTENT
 
 KICKER_H = 20
-DATE_H = 88
+DATE_H = 86
 STRIP_H = 42
-HERO_H = 252
-CARDS_H = 252
+HERO_H = 216
+CARDS_H = 327
 CHIPS_H = 21
-MAP_H = 74
-INDEX_H = 223
-CHECK_H = 39
+MAP_H = 66
+INDEX_H = 196
+CHECK_H = 37
 FOOTER_H = 13
 
-# Index grid: four columns; a column holds eight briefs.  The
+# Index grid: four columns; a column holds seven briefs.  The
 # grid starts INDEX_TOP px into the band and rows are INDEX_ROW_H
 # apart; a brief's lines advance INDEX_LEAD px each.  The deepest
-# brief (row 7, two lines) bottoms at 20 + 7*25 + 28 = 223 px,
-# exactly the 223 px band — the gate measures this per brief.
-INDEX_ROWS = 8
-INDEX_ROW_H = 25
+# brief (row 6, two lines) bottoms at 20 + 6*24 + 28 = 192 px,
+# inside the 196 px band — the gate measures this per brief.
+INDEX_ROWS = 7
+INDEX_ROW_H = 24
 INDEX_TOP = 20
 INDEX_LEAD = 14
 
-HERO_SCENE_H = 160
+HERO_SCENE_H = 126
 HERO1_W = 655
 HERO_GAP = 10
 HERO2_W = CONTENT - HERO1_W - HERO_GAP
 
-CARD_SCENE_H = 68
-CARD_ROW_H = 126
+# Card grid, three rows (round 7): every row's height is its
+# scene plus the text block its widest-wrapping card needs —
+# rows 1 and 3 carry two-line headlines (scene + 57), row 2's
+# 328 px cards all wrap to one line (scene + 43, plus slack).
+CARD_SCENE_H = 56
 CARD_GUTTER = 3
 ROW1_WIDTHS = [395, 196, 196, 196]
-ROW2_WIDTHS = [196, 196, 196, 196, 195]
+ROW2_WIDTHS = [328, 328, 327]
+ROW3_WIDTHS = [246, 246, 246, 245]
+CARD_ROW_HS = [113, 99, 115]
 
 REGION_ORDER = ["Asia", "Middle East", "Europe", "Americas", "Africa",
                 "Oceania", "Global"]
@@ -274,15 +288,15 @@ def _card(draw, img, story, x, y, w):
 
 
 def _cards(draw, img, cards, y):
-    row1, row2 = cards[:4], cards[4:]
-    cx = MARGIN
-    for story, w in zip(row1, ROW1_WIDTHS):
-        _card(draw, img, story, cx, y, w)
-        cx += w + CARD_GUTTER
-    cx = MARGIN
-    for story, w in zip(row2, ROW2_WIDTHS):
-        _card(draw, img, story, cx, y + CARD_ROW_H, w)
-        cx += w + CARD_GUTTER
+    rows = (cards[:4], cards[4:7], cards[7:])
+    widths = (ROW1_WIDTHS, ROW2_WIDTHS, ROW3_WIDTHS)
+    cy = y
+    for row, ws, rh in zip(rows, widths, CARD_ROW_HS):
+        cx = MARGIN
+        for story, w in zip(row, ws):
+            _card(draw, img, story, cx, cy, w)
+            cx += w + CARD_GUTTER
+        cy += rh
 
 
 def _map(draw, y, note=""):
@@ -311,7 +325,7 @@ def _index(draw, briefs, y, stats):
     draw.text((RIGHT - text_w(draw, note, note_face), y + 5), note,
               font=note_face, fill=C.FAINT)
     draw.line([MARGIN, y + 18, RIGHT, y + 18], fill=C.INK)
-    # Four columns of eight rows (28 briefs); rows are INDEX_ROW_H
+    # Four columns of seven rows (26 briefs); rows are INDEX_ROW_H
     # apart starting INDEX_TOP px into the band, so the deepest
     # brief bottoms inside the band (see the constants above).
     # Round 6: briefs carry PLACE — fact (Source) at 11 pt (at

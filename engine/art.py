@@ -60,9 +60,16 @@ def paint_plenary(img, draw, box, story):
         fx = x + w * (0.10 + 0.17 * i)
         draw.polygon([(fx, y + h * 0.30), (fx + w * 0.05, y + h * 0.30),
                       (fx + w * 0.025, y + h * 0.37)], fill=col)
+    # hanging lamps between the windows and the bunting
+    for i in range(6):
+        lx = x + w * (0.09 + 0.16 * i)
+        draw.line([lx, y + h * 0.24, lx, y + h * 0.28],
+                  fill=(200, 190, 160), width=1)
+        draw.ellipse([lx - 3, y + h * 0.28, lx + 3, y + h * 0.28 + 5],
+                     fill=(255, 226, 140))
     # balcony rail with the back delegate row behind it
-    for i in range(12):
-        hx = x + w * (0.05 + 0.085 * i)
+    for i in range(16):
+        hx = x + w * (0.03 + 0.062 * i)
         _head(draw, hx, y + h * 0.33, h * 0.045,
               (30, 28, 26) if i % 2 else (120, 90, 60))
     draw.rectangle([x, y + h * 0.36, x + w, y + h * 0.40],
@@ -111,9 +118,13 @@ def paint_plenary(img, draw, box, story):
         draw.ellipse([x + w * (fx + 0.025), y + h * 0.49,
                       x + w * (fx + 0.045), y + h * 0.55],
                      fill=(240, 240, 230))
+    # tall vertical banners at the hall's edges
+    for bx, col in ((0.005, (178, 40, 40)), (0.972, (240, 200, 60))):
+        draw.rectangle([x + w * bx, y + h * 0.42, x + w * (bx + 0.02),
+                        y + h * 0.88], fill=col)
     # mid delegate row with small flags on the desk
-    for i in range(9):
-        hx = x + w * (0.06 + 0.11 * i)
+    for i in range(12):
+        hx = x + w * (0.045 + 0.082 * i)
         _head(draw, hx, y + h * 0.70, h * 0.05,
               (60, 44, 30) if i % 3 else (18, 18, 18))
         draw.rectangle([hx + h * 0.05, y + h * 0.72,
@@ -135,9 +146,10 @@ def paint_plenary(img, draw, box, story):
                     y + h * 0.81], fill=(140, 104, 62))
     draw.text((px - 14, y + h * 0.83), "COP31",
               font=get_font(C.SANS_BOLD, 10), fill=(244, 196, 84))
-    # front delegate row: heads, shoulders, desk flags
-    for i in range(11):
-        hx = x + w * (0.045 + 0.09 * i)
+    # front delegate row: heads, shoulders, desk flags, paper
+    # stacks and white country nameplates on every desk
+    for i in range(13):
+        hx = x + w * (0.035 + 0.077 * i)
         if abs(hx - px) < w * 0.09:
             continue
         _head(draw, hx, y + h * 0.93, h * 0.055,
@@ -150,6 +162,22 @@ def paint_plenary(img, draw, box, story):
         draw.rectangle([hx - h * 0.06, y + h * 0.90,
                         hx - h * 0.06 + 7, y + h * 0.95],
                        fill=flag_cols[i % len(flag_cols)])
+        draw.rectangle([hx + h * 0.02, y + h * 0.945,
+                        hx + h * 0.10, y + h * 0.975],
+                       fill=(248, 246, 240))
+        draw.rectangle([hx - h * 0.11, y + h * 0.955,
+                        hx - h * 0.07, y + h * 0.985],
+                       fill=(255, 255, 250))
+    # press cameras on tripods at both front corners
+    for cx in (x + w * 0.015, x + w * 0.955):
+        draw.rectangle([cx, y + h * 0.80, cx + w * 0.028, y + h * 0.86],
+                       fill=(16, 16, 20))
+        draw.line([cx + 2, y + h * 0.86, cx - 3, y + h * 0.97],
+                  fill=(16, 16, 20), width=2)
+        draw.line([cx + w * 0.014, y + h * 0.86, cx + w * 0.014,
+                   y + h * 0.97], fill=(16, 16, 20), width=2)
+        draw.line([cx + w * 0.026, y + h * 0.86, cx + w * 0.036,
+                   y + h * 0.97], fill=(16, 16, 20), width=2)
 
 
 def paint_missilenight(img, draw, box, story):
@@ -173,9 +201,32 @@ def paint_missilenight(img, draw, box, story):
         draw.rectangle([tx0, y + h * (0.98 - hh), tx1, y + h * 0.98],
                        fill=(16, 20, 36))
         for wy in range(3):
-            draw.rectangle([tx0 + 3, y + h * (0.98 - hh + 0.08 + 0.12 * wy),
-                            tx0 + 8, y + h * (0.98 - hh + 0.12 + 0.12 * wy)],
-                           fill=(244, 196, 84))
+            for wx in range(2):
+                if (i + wy + wx) % 3 == 2:
+                    continue
+                draw.rectangle(
+                    [tx0 + 3 + wx * 8,
+                     y + h * (0.98 - hh + 0.08 + 0.12 * wy),
+                     tx0 + 8 + wx * 8,
+                     y + h * (0.98 - hh + 0.12 + 0.12 * wy)],
+                    fill=(244, 196, 84))
+    # a radar dome on the second tower
+    draw.pieslice([x + w * 0.155, y + h * 0.36, x + w * 0.215,
+                   y + h * 0.46], 180, 360, fill=(200, 204, 216))
+    # foreground rooftops: water tanks, an antenna, streetlights
+    draw.rectangle([x, y + h * 0.94, x + w, y + h], fill=(10, 12, 24))
+    draw.rectangle([x + w * 0.06, y + h * 0.885, x + w * 0.11,
+                    y + h * 0.94], fill=(10, 12, 24))
+    draw.rectangle([x + w * 0.70, y + h * 0.895, x + w * 0.76,
+                    y + h * 0.94], fill=(10, 12, 24))
+    draw.line([x + w * 0.86, y + h * 0.94, x + w * 0.86, y + h * 0.86],
+              fill=(10, 12, 24), width=2)
+    draw.line([x + w * 0.82, y + h * 0.885, x + w * 0.90, y + h * 0.885],
+              fill=(10, 12, 24), width=2)
+    for i in range(7):
+        lx = x + w * (0.05 + 0.15 * i)
+        draw.ellipse([lx - 2, y + h * 0.955, lx + 2, y + h * 0.955 + 4],
+                     fill=(255, 226, 140))
     draw.polygon([(x + w * 0.50, y + h * 0.30), (x + w * 0.52,
                   y + h * 0.36), (x + w * 0.48, y + h * 0.36)],
                  fill=(16, 20, 36))
@@ -188,16 +239,24 @@ def paint_missilenight(img, draw, box, story):
                   fill=(255, 190, 90), width=3)
         draw.ellipse([x + w * x1 - 3, y + h * y1 - 3, x + w * x1 + 3,
                       y + h * y1 + 3], fill=(255, 220, 150))
-    # three intercept bursts
-    for bx, by in ((0.30, 0.42), (0.52, 0.38), (0.72, 0.40)):
+    # five intercept bursts: three large, two smaller and higher
+    for bx, by, br in ((0.30, 0.42, 12), (0.52, 0.38, 12),
+                       (0.72, 0.40, 12), (0.14, 0.28, 7),
+                       (0.90, 0.26, 7)):
         cx, cy = x + w * bx, y + h * by
         for ang in range(0, 360, 45):
             a = math.radians(ang)
-            draw.line([cx, cy, cx + 12 * math.cos(a),
-                       cy + 12 * math.sin(a)], fill=(255, 240, 170),
+            draw.line([cx, cy, cx + br * math.cos(a),
+                       cy + br * math.sin(a)], fill=(255, 240, 170),
                       width=2)
         draw.ellipse([cx - 4, cy - 4, cx + 4, cy + 4],
                      fill=(255, 240, 170))
+    # smoke puffs drifting off the first trail
+    for px, py, pr in ((0.20, 0.50, 5), (0.25, 0.46, 7),
+                       (0.16, 0.55, 4)):
+        draw.ellipse([x + w * px - pr, y + h * py - pr * 0.6,
+                      x + w * px + pr, y + h * py + pr * 0.6],
+                     fill=(150, 156, 178))
     # searchlight beams from the rooftops
     for bx in (0.18, 0.62):
         draw.polygon([(x + w * bx, y + h * 0.95), (x + w * (bx - 0.06),
@@ -293,12 +352,12 @@ def paint_march(img, draw, box, story):
     # 480 px; the boxes start below the scene chip (which occupies
     # the top 21 px) so no placard slides under it, and the words
     # sit inside the boxes with clear air on every side
-    for px, txt, size in ((0.03, "JOBS", 12), (0.35, "RENT", 12),
-                          (0.66, "CLIMATE", 10)):
+    for px, txt, size in ((0.03, "JOBS", 10), (0.35, "RENT", 10),
+                          (0.66, "CLIMATE", 9)):
         draw.rectangle([x + w * (px + 0.13), y + h * 0.62,
                         x + w * (px + 0.13) + 2, y + h * 0.82],
                        fill=(60, 56, 50))
-        draw.rectangle([x + w * px, y + h * 0.34, x + w * (px + 0.30),
+        draw.rectangle([x + w * px, y + h * 0.38, x + w * (px + 0.30),
                         y + h * 0.62], fill=(248, 244, 236),
                        outline=(24, 22, 20), width=2)
         draw.text((x + w * (px + 0.025), y + h * 0.395), txt,
@@ -485,7 +544,7 @@ def paint_expel(img, draw, box, story):
     draw.rectangle([x + w * 0.87, y + h * 0.28, x + w * 0.90,
                     y + h * 0.40], fill=(240, 240, 230))
     # the departing envoy in the foreground, suitcase in hand
-    _person(draw, x + w * 0.68, y + h * 0.96, h * 0.44,
+    _person(draw, x + w * 0.68, y + h * 0.96, h * 0.52,
             (34, 38, 60), (30, 28, 26))
     draw.rectangle([x + w * 0.76, y + h * 0.82, x + w * 0.88,
                     y + h * 0.96], fill=(96, 72, 46))
@@ -493,14 +552,16 @@ def paint_expel(img, draw, box, story):
                     y + h * 0.82], outline=(60, 44, 30), width=2)
     draw.line([x + w * 0.76, y + h * 0.89, x + w * 0.88,
                y + h * 0.89], fill=(60, 44, 30), width=2)
-    # stamped document on the steps
-    draw.rectangle([x + w * 0.08, y + h * 0.80, x + w * 0.34,
-                    y + h * 0.96], fill=(248, 246, 240),
+    # stamped document on the steps — sized so the stamp ring
+    # and its VOID word stay inside the paper even in a short
+    # (56 px) card scene
+    draw.rectangle([x + w * 0.08, y + h * 0.72, x + w * 0.34,
+                    y + h * 0.97], fill=(248, 246, 240),
                    outline=(24, 22, 20))
-    draw.ellipse([x + w * 0.13, y + h * 0.83, x + w * 0.29,
-                  y + h * 0.93], outline=(158, 32, 28), width=2)
-    draw.text((x + w * 0.16, y + h * 0.85), "VOID",
-              font=get_font(C.SANS_BOLD, 8), fill=(158, 32, 28))
+    draw.ellipse([x + w * 0.13, y + h * 0.78, x + w * 0.29,
+                  y + h * 0.94], outline=(158, 32, 28), width=2)
+    draw.text((x + w * 0.165, y + h * 0.815), "VOID",
+              font=get_font(C.SANS_BOLD, 7), fill=(158, 32, 28))
 
 
 def paint_capsize(img, draw, box, story):
@@ -600,60 +661,61 @@ def paint_tankers(img, draw, box, story):
 
 
 def paint_hormuz(img, draw, box, story):
-    """Strait of Hormuz at dusk: the two headlands narrow the
-    channel, a tanker sails it, and an MQ-9 crosses the sky inside
-    a dashed claim reticle — the dashed ring, not a hit, is what
-    the scene asserts: a claim, unconfirmed."""
+    """Strait of Hormuz at dusk, recomposed drone-first (round 7):
+    the MQ-9 is the scene's primary subject — large, high in the
+    sky at the right, circled by the dashed claim reticle — while
+    the tanker is demoted to a small hull low at the left and the
+    headlands sit low on the horizon.  The dashed ring, not a hit,
+    is what the scene asserts: a claim, unconfirmed."""
     x, y, w, h = box
     # dusk sky, lighter at the top
-    draw.rectangle([x, y, x + w, y + h * 0.58], fill=(240, 196, 130))
-    draw.rectangle([x, y + h * 0.30, x + w, y + h * 0.58],
+    draw.rectangle([x, y, x + w, y + h * 0.62], fill=(240, 196, 130))
+    draw.rectangle([x, y + h * 0.34, x + w, y + h * 0.62],
                    fill=(232, 176, 116))
-    # low sun over the strait
-    draw.ellipse([x + w * 0.44, y + h * 0.30, x + w * 0.54,
-                  y + h * 0.48], fill=(255, 220, 140))
-    # headlands: Iran to the left, Oman to the right, the channel
-    # narrowing between them at the horizon
-    draw.polygon([(x, y + h * 0.30), (x + w * 0.30, y + h * 0.50),
-                  (x + w * 0.35, y + h * 0.58), (x, y + h * 0.58)],
+    # small low sun centre-left, clear of chip and drone alike
+    draw.ellipse([x + w * 0.295, y + h * 0.34, x + w * 0.365,
+                  y + h * 0.50], fill=(255, 220, 140))
+    # headlands low on the horizon: Iran left, Oman right
+    draw.polygon([(x, y + h * 0.44), (x + w * 0.26, y + h * 0.58),
+                  (x + w * 0.30, y + h * 0.62), (x, y + h * 0.62)],
                  fill=(96, 74, 58))
-    draw.polygon([(x + w, y + h * 0.26), (x + w * 0.71, y + h * 0.48),
-                  (x + w * 0.66, y + h * 0.58), (x + w, y + h * 0.58)],
+    draw.polygon([(x + w, y + h * 0.42), (x + w * 0.76, y + h * 0.57),
+                  (x + w * 0.72, y + h * 0.62), (x + w, y + h * 0.62)],
                  fill=(84, 64, 50))
     # the sea below the horizon line
-    draw.rectangle([x, y + h * 0.58, x + w, y + h], fill=SEA)
-    for wy in (0.68, 0.82, 0.93):
+    draw.rectangle([x, y + h * 0.62, x + w, y + h], fill=SEA)
+    for wy in (0.74, 0.88):
         for i in range(4):
             cx = x + w * (0.05 + 0.25 * i)
             draw.arc([cx, y + h * wy, cx + w * 0.16, y + h * (wy + 0.08)],
                      180, 360, fill=(170, 196, 214), width=2)
-    # the tanker in the channel: hull, deck line, superstructure
-    hx0, hy = x + w * 0.36, y + h * 0.64
-    hw = w * 0.30
-    draw.rectangle([hx0, hy, hx0 + hw, hy + h * 0.11], fill=(30, 34, 44))
-    draw.rectangle([hx0, hy + h * 0.11, hx0 + hw, hy + h * 0.135],
+    # the tanker, demoted: a small hull low at the left
+    hx0, hy = x + w * 0.05, y + h * 0.70
+    hw = w * 0.24
+    draw.rectangle([hx0, hy, hx0 + hw, hy + h * 0.09], fill=(30, 34, 44))
+    draw.rectangle([hx0, hy + h * 0.09, hx0 + hw, hy + h * 0.11],
                    fill=(178, 40, 40))
-    draw.rectangle([hx0 + hw * 0.08, hy - h * 0.11, hx0 + hw * 0.22,
+    draw.rectangle([hx0 + hw * 0.10, hy - h * 0.08, hx0 + hw * 0.24,
                     hy], fill=(200, 200, 196))
-    draw.rectangle([hx0 + hw * 0.13, hy - h * 0.19, hx0 + hw * 0.16,
-                    hy - h * 0.11], fill=(150, 60, 50))
-    # the MQ-9: long straight wing, slender body, V-tail, top right
-    dx, dy = x + w * 0.80, y + h * 0.20
-    draw.line([dx - w * 0.085, dy + h * 0.015, dx + w * 0.085,
-               dy - h * 0.015], fill=(24, 22, 20), width=3)
-    draw.line([dx - w * 0.045, dy - h * 0.045, dx + w * 0.045,
-               dy + h * 0.045], fill=(24, 22, 20), width=2)
-    draw.line([dx + w * 0.038, dy - h * 0.038, dx + w * 0.062,
-               dy - h * 0.085], fill=(24, 22, 20), width=2)
-    draw.line([dx + w * 0.038, dy - h * 0.038, dx + w * 0.070,
-               dy - h * 0.030], fill=(24, 22, 20), width=2)
-    draw.ellipse([dx - 3, dy - h * 0.045 - 3, dx + 3, dy - h * 0.045 + 3],
+    # the MQ-9, primary: long straight wing spanning 30% of the
+    # card, slender body, V-tail — centred high at the right, its
+    # whole reticle clear of the label chip at the top left
+    dx, dy = x + w * 0.72, y + h * 0.30
+    draw.line([dx - w * 0.15, dy + h * 0.03, dx + w * 0.15,
+               dy - h * 0.03], fill=(24, 22, 20), width=3)
+    draw.line([dx - w * 0.08, dy - h * 0.08, dx + w * 0.08,
+               dy + h * 0.08], fill=(24, 22, 20), width=2)
+    draw.line([dx + w * 0.065, dy - h * 0.065, dx + w * 0.105,
+               dy - h * 0.15], fill=(24, 22, 20), width=2)
+    draw.line([dx + w * 0.065, dy - h * 0.065, dx + w * 0.12,
+               dy - h * 0.05], fill=(24, 22, 20), width=2)
+    draw.ellipse([dx - 4, dy - h * 0.08 - 4, dx + 4, dy - h * 0.08 + 4],
                  fill=(24, 22, 20))
     # dashed claim reticle around the drone (segments, not a ring)
-    rx, ry = w * 0.115, h * 0.21
+    rx, ry = w * 0.175, h * 0.24
     for a0 in range(0, 360, 36):
-        draw.arc([dx - rx, dy - h * 0.02 - ry, dx + rx,
-                  dy - h * 0.02 + ry], a0, a0 + 20,
+        draw.arc([dx - rx, dy - h * 0.04 - ry, dx + rx,
+                  dy - h * 0.04 + ry], a0, a0 + 20,
                  fill=(158, 32, 28), width=2)
 
 
@@ -774,8 +836,9 @@ def paint_arson(img, draw, box, story):
             draw.rectangle([x + w * wx, y + h * wy,
                             x + w * (wx + 0.10), y + h * (wy + 0.09)],
                            fill=(240, 160, 60))
-    # flames above the roof
-    for fx, fh in ((0.12, 0.30), (0.24, 0.38), (0.38, 0.28)):
+    # flames above the roof, shifted right so no flame tip
+    # slides under the scene's label chip at the top left
+    for fx, fh in ((0.22, 0.30), (0.35, 0.38), (0.47, 0.28)):
         draw.polygon([(x + w * fx, y + h * 0.44),
                       (x + w * (fx + 0.05), y + h * (0.44 - fh)),
                       (x + w * (fx + 0.10), y + h * 0.44)],
@@ -785,8 +848,8 @@ def paint_arson(img, draw, box, story):
                       (x + w * (fx + 0.08), y + h * 0.44)],
                      fill=(255, 210, 90))
     # smoke rising
-    for sx, sy, r in ((0.30, 0.10, 0.07), (0.42, 0.05, 0.08),
-                      (0.20, 0.04, 0.06)):
+    for sx, sy, r in ((0.36, 0.13, 0.07), (0.50, 0.09, 0.08),
+                      (0.30, 0.18, 0.06)):
         draw.ellipse([x + w * (sx - r), y + h * (sy - r * 0.5),
                       x + w * (sx + r), y + h * (sy + r * 0.5)],
                      fill=(120, 116, 110))
@@ -828,6 +891,8 @@ MAP_PINS = [
     (8, 0.260, 0.75),   # Tupanciretã, Brazil
     (9, 0.500, 0.10),   # Copenhagen
     (10, 0.640, 0.33),  # Kharg Island
+    (12, 0.500, 0.52),  # Nigeria
+    (13, 0.755, 0.40),  # Dhaka
 ]
 
 # Small continent labels for the map band (map-local fractions,
@@ -836,11 +901,11 @@ MAP_PINS = [
 # at native size without crowding the 480 px view.
 MAP_LABELS = [
     (0.040, 0.06, "NORTH AMERICA"),
-    (0.175, 0.88, "SOUTH AMERICA"),
+    (0.175, 0.82, "SOUTH AMERICA"),
     (0.408, 0.06, "EUROPE"),
     (0.420, 0.60, "AFRICA"),
     (0.700, 0.06, "ASIA"),
-    (0.820, 0.90, "OCEANIA"),
+    (0.820, 0.82, "OCEANIA"),
 ]
 
 

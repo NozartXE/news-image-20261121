@@ -25,11 +25,14 @@ from .words import get_font, wrap_lines
 # 9 cards + 28 index.  INDEX_TEXT_W matches the renderer's wrap
 # width exactly (208, narrowed from 210 when the number-block
 # gutter grew — a stricter wrap check, not a weaker one).
+# Round 7 shape: 39 stories = 2 heroes + 11 cards + 26 index,
+# 13 illustrated — two Section A index stories promoted to
+# cards, no story dropped, no card narrowed.
 WANT_STORIES = 39
-WANT_ILLUSTRATED = 11
+WANT_ILLUSTRATED = 13
 WANT_HEROES = 2
-WANT_CARDS = 9
-WANT_INDEX = 28
+WANT_CARDS = 11
+WANT_INDEX = 26
 WANT_REGIONS = 7
 INDEX_TEXT_W = 208
 NARROW_HERO_W = 327
@@ -185,14 +188,16 @@ def validate(data):
             failures.append("index grid depth %d px exceeds band %d px"
                             % (deepest, INDEX_H))
     head_face = get_font(C.SANS_BOLD, 13)
-    from .page import CARD_SCENE_H, ROW1_WIDTHS, ROW2_WIDTHS
+    from .page import (CARD_SCENE_H, ROW1_WIDTHS, ROW2_WIDTHS,
+                       ROW3_WIDTHS)
     from .words import fit_size, text_w
-    widths = {s["num"]: w for s, w in zip(
-        [s for s in stories if s.get("tier") == "card"][:4],
-        ROW1_WIDTHS)}
-    widths.update({s["num"]: w for s, w in zip(
-        [s for s in stories if s.get("tier") == "card"][4:],
-        ROW2_WIDTHS)})
+    card_list = [s for s in stories if s.get("tier") == "card"]
+    widths = {s["num"]: w for s, w in zip(card_list[:4],
+                                          ROW1_WIDTHS)}
+    widths.update({s["num"]: w for s, w in zip(card_list[4:7],
+                                               ROW2_WIDTHS)})
+    widths.update({s["num"]: w for s, w in zip(card_list[7:],
+                                               ROW3_WIDTHS)})
     for story in stories:
         if story.get("tier") != "card":
             continue
